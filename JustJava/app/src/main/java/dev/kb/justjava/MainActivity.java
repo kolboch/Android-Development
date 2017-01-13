@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.math.BigInteger;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +27,11 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void submitOrder(View view){
-        displayPrice(new BigDecimal(quantity * COFFEE_PRICE));
+        if(quantity != 0) {
+            displayOrderMessage();
+            quantity = 0;
+            displayQuantity();
+        }
     }
 
     /**
@@ -56,13 +61,34 @@ public class MainActivity extends AppCompatActivity {
      * decrements quantity ( current quantity - 1), called when - button is clicked
      */
     public void decrementQuantity(View view){
-        quantity--;
-        refreshQuantityAndPrice();
+        if(quantity > 0) {
+            quantity--;
+            refreshQuantityAndPrice();
+        }
     }
 
+    /**
+     * displays price
+     * @param price
+     */
     private void displayPrice(BigDecimal price){
         TextView priceTextView = (TextView)findViewById(R.id.price_text_view);
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(price));
+    }
+
+    /**
+     * displays given message in textView
+     * @param message
+     */
+    private void displayMessage(String message){
+        TextView priceTextView = (TextView)findViewById(R.id.price_text_view);
+        priceTextView.setText(message);
+    }
+
+    private void displayOrderMessage(){
+        int price = quantity * COFFEE_PRICE;
+        displayMessage("You ordered: " + quantity + " coffees. \n" +
+        "Prepare " + NumberFormat.getCurrencyInstance().format(price) + "\n" + "Thank you!");
     }
 
 }
