@@ -65,7 +65,6 @@ public class DisplayData extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             HttpHandler handler = new HttpHandler();
             String jsonString = handler.makeServiceCall(dataURL);
-            Log.i(LOGS_TAG, "URL response: " + jsonString);
 
             if (jsonString != null) {
 

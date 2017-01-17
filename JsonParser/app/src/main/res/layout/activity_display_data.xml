@@ -9,19 +9,23 @@
 
     <TextView
         android:id="@+id/dataTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:padding="16dp"
         android:text="Data list"
-        android:layout_gravity="center_horizontal"
-        android:textSize="16sp"/>
+        android:textColor="@android:color/black"
+        android:background="#E0E0E0"
+        android:textSize="20sp"
+        />
 
     <ListView
         android:id="@+id/dataList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/dataTitle"
-        android:layout_weight="1"></ListView>
+
+        android:layout_weight="1"/>
 
 </LinearLayout>
