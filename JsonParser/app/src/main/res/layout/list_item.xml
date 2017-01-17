@@ -8,21 +8,24 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:onClick="showHideCountryView">
 
         <TextView
             android:id="@+id/firstName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TEST 1" />
+            android:text="First name" />
 
         <TextView
             android:id="@+id/lastName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TEST 2" />
+            android:text="Last name" />
+
     </LinearLayout>
 
     <TextView
@@ -30,5 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="TEST3" />
+        android:text="Origin country"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -36,6 +37,17 @@ public class DisplayData extends AppCompatActivity {
         listOfPeople = new ArrayList<>();
         listView = (ListView) findViewById(R.id.dataList);
         new GetPeople().execute();
+    }
+
+    public void showHideCountryView(View view){
+        View holder = (View)view.getParent();
+        View country = holder.findViewById(R.id.country);
+        if(country.getVisibility() == View.GONE){
+            country.setVisibility(View.VISIBLE);
+        }
+        else{
+            country.setVisibility(View.GONE);
+        }
     }
 
     private class GetPeople extends AsyncTask<Void, Void, Void> {

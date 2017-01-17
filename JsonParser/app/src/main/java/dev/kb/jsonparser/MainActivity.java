@@ -13,6 +13,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    /**
+     * proceeds to DisplayData activity
+     * @param view
+     */
     public void proceedToData(View view){
         Intent intent = new Intent(this, DisplayData.class);
         startActivity(intent);
