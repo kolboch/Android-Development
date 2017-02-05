@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Karol on 2017-02-05.
@@ -54,7 +53,7 @@ public final class QueryUtils {
                 magnitude = properties.getDouble("mag");
                 String place = properties.getString("place");
                 date = properties.getLong("time");
-                EarthquakeRecord record = new EarthquakeRecord(magnitude, place, new Date(date));
+                EarthquakeRecord record = new EarthquakeRecord(magnitude, place, date);
                 earthquakes.add(record);
             }
         } catch (JSONException e) {
