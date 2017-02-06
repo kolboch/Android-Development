@@ -8,14 +8,20 @@
 
     <TextView
         android:id="@+id/list_item_magnitude"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="7.3"/>
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/magnitude_circle"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="2.3"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
         android:layout_weight="4"
         android:gravity="left"
         android:orientation="vertical">
@@ -24,8 +30,8 @@
             android:id="@+id/list_item_place_offset"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginBottom="2dp"
+            android:layout_weight="1"
             android:text="97km NE of"/>
 
         <TextView
