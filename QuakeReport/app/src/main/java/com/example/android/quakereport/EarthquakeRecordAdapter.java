@@ -50,7 +50,7 @@ public class EarthquakeRecordAdapter extends ArrayAdapter<EarthquakeRecord> {
         TextView magnitudeTextView = (TextView) listItemView.findViewById(R.id.list_item_magnitude);
         double magnitude = currentEarthquakeRecord.getMagnitude();
         magnitudeTextView.setText(formatMagnitude(magnitude));
-        GradientDrawable magnitudeCircle = (GradientDrawable)magnitudeTextView.getBackground();
+        GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeTextView.getBackground();
         magnitudeCircle.setColor(getMagnitudeColor(magnitude));
 
         TextView placeOffsetTextView = (TextView) listItemView.findViewById(R.id.list_item_place_offset);
@@ -86,6 +86,7 @@ public class EarthquakeRecordAdapter extends ArrayAdapter<EarthquakeRecord> {
 
     /**
      * retrieves only city/ region from place string
+     *
      * @param place
      */
     private String getPlace(String place) {
@@ -96,6 +97,7 @@ public class EarthquakeRecordAdapter extends ArrayAdapter<EarthquakeRecord> {
 
     /**
      * retrieves offset of place, if no provided returns 'Near the' string
+     *
      * @param place
      */
     private String getPlaceOffset(String place) {
@@ -104,15 +106,16 @@ public class EarthquakeRecordAdapter extends ArrayAdapter<EarthquakeRecord> {
         return result;
     }
 
-    private String formatMagnitude(double magnitude){
+    private String formatMagnitude(double magnitude) {
         DecimalFormat magnitudeFormat = new DecimalFormat("0.0");
         return magnitudeFormat.format(magnitude);
     }
 
-    private int getMagnitudeColor(double magnitude){
+    private int getMagnitudeColor(double magnitude) {
         int colorID;
-        switch ((int)Math.floor(magnitude)){
-            case 0:case 1:
+        switch ((int) Math.floor(magnitude)) {
+            case 0:
+            case 1:
                 colorID = R.color.magnitude2_less;
                 break;
             case 2:

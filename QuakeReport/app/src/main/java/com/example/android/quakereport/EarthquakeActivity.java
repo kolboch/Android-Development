@@ -15,10 +15,17 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class EarthquakeActivity extends AppCompatActivity {
@@ -42,5 +49,29 @@ public class EarthquakeActivity extends AppCompatActivity {
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(earthquakesAdapter);
+        setListItemsURLs(earthquakeListView);
+
+
+    }
+
+    private void setListItemsURLs(final ListView lv){
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
+                EarthquakeRecord item = (EarthquakeRecord) lv.getAdapter().getItem(position);
+                String urlString = item.getEarthquakeURL();
+                Intent intent = null;
+                try {
+                    URL url = new URL(urlString);
+                    intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url.toString()));
+                } catch (MalformedURLException e) {
+                    Log.e(LOG_TAG, "Error when creating url from url string.");
+                    e.printStackTrace();
+                }
+                if(intent != null){
+                    startActivity(intent);
+                }
+            }
+        });
     }
 }

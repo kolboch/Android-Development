@@ -46,14 +46,15 @@ public final class QueryUtils {
 
             // out of loop to make processing faster
             JSONObject earthquake, properties;
-            double magnitude; long date;
+            double magnitude; long date; String details;
             for(int i = 0; i < features.length(); i++){
                 earthquake = features.getJSONObject(i);
                 properties = earthquake.getJSONObject("properties");
                 magnitude = properties.getDouble("mag");
                 String place = properties.getString("place");
                 date = properties.getLong("time");
-                EarthquakeRecord record = new EarthquakeRecord(magnitude, place, date);
+                details = properties.getString("url");
+                EarthquakeRecord record = new EarthquakeRecord(magnitude, place, date, details);
                 earthquakes.add(record);
             }
         } catch (JSONException e) {

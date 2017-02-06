@@ -32,14 +32,19 @@
             android:layout_height="0dp"
             android:layout_marginBottom="2dp"
             android:layout_weight="1"
-            android:text="97km NE of"/>
+            android:text="97km NE of"
+            android:textAllCaps="true"
+            android:textColor="@color/textColorEarthquakeDetails"/>
 
         <TextView
             android:id="@+id/list_item_place"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Oklahoma, NY"/>
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Oklahoma, NY"
+            android:textColor="@color/textColorEarthquakeLocation"/>
     </LinearLayout>
 
     <LinearLayout
@@ -55,14 +60,16 @@
             android:layout_height="0dp"
             android:layout_marginBottom="2dp"
             android:layout_weight="1"
-            android:text="12 Nov, 2017"/>
+            android:text="12 Nov, 2017"
+            android:textColor="@color/textColorEarthquakeDetails"/>
 
         <TextView
             android:id="@+id/list_item_date_hour"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="11:45 PM"/>
+            android:text="11:45 PM"
+            android:textColor="@color/textColorEarthquakeDetails"/>
     </LinearLayout>
 
 </LinearLayout>
