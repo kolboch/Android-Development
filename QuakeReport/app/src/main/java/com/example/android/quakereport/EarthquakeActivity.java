@@ -15,9 +15,10 @@
  */
 package com.example.android.quakereport;
 
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,7 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderCallbacks<List<EarthquakeRecord>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     private ArrayList<EarthquakeRecord> earthquakes;
@@ -41,7 +42,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        new DataDownloader().execute(QUERY_URL);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     private void setListItemsURLs(final ListView lv) {
@@ -79,22 +80,23 @@ public class EarthquakeActivity extends AppCompatActivity {
         setListItemsURLs(earthquakeListView);
     }
 
-    private class DataDownloader extends AsyncTask<String, Void, List<EarthquakeRecord>> {
-        @Override
-        protected List<EarthquakeRecord> doInBackground(String... urls) {
-            List<EarthquakeRecord> earthquakes = null;
-            if (urls.length != 0 && urls[0] != null) {
-                earthquakes = QueryUtils.fetchEarthquakes(urls[0]);
-            }
-            return earthquakes;
-        }
+    @Override
+    public Loader<List<EarthquakeRecord>> onCreateLoader(int i, Bundle bundle) {
+        Log.i(LOG_TAG, "onCreateLoader called");
+        EarthquakeLoader loader = new EarthquakeLoader(getApplicationContext(), new String[]{QUERY_URL});
+        return loader;
+    }
 
-        @Override
-        protected void onPostExecute(List<EarthquakeRecord> earthquakeRecords) {
-            if (earthquakeRecords != null) {
-                updateUI(earthquakeRecords);
-            }
+    @Override
+    public void onLoadFinished(Loader<List<EarthquakeRecord>> loader, List<EarthquakeRecord> earthquakeRecords) {
+        Log.i(LOG_TAG, "onLoadFinished called");
+        if(earthquakeRecords != null){
+            updateUI(earthquakeRecords);
         }
+    }
 
+    @Override
+    public void onLoaderReset(Loader<List<EarthquakeRecord>> loader) {
+        Log.i(LOG_TAG, "onLoaderResetCalled called");
     }
 }
