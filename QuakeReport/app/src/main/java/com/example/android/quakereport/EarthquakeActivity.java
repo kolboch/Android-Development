@@ -92,6 +92,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
     @Override
     public void onLoadFinished(Loader<List<EarthquakeRecord>> loader, List<EarthquakeRecord> earthquakeRecords) {
+        hideProgressBar();
         if (earthquakeRecords != null && !earthquakeRecords.isEmpty()) {
             updateUI(earthquakeRecords);
         } else {
@@ -105,5 +106,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
     private void setNoItemsText() {
         noItemsTextView.setText(R.string.no_earthquakes);
+    }
+
+    private void hideProgressBar(){
+        findViewById(R.id.loading_spinner).setVisibility(View.GONE);
     }
 }
