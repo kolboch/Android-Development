@@ -67,7 +67,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     }
 
     private void updateUI(List<EarthquakeRecord> earthquakesRecord) {
-        this.earthquakes = (ArrayList)earthquakesRecord;
+        this.earthquakes = (ArrayList) earthquakesRecord;
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
@@ -82,21 +82,18 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
     @Override
     public Loader<List<EarthquakeRecord>> onCreateLoader(int i, Bundle bundle) {
-        Log.i(LOG_TAG, "onCreateLoader called");
         EarthquakeLoader loader = new EarthquakeLoader(getApplicationContext(), new String[]{QUERY_URL});
         return loader;
     }
 
     @Override
     public void onLoadFinished(Loader<List<EarthquakeRecord>> loader, List<EarthquakeRecord> earthquakeRecords) {
-        Log.i(LOG_TAG, "onLoadFinished called");
-        if(earthquakeRecords != null){
+        if (earthquakeRecords != null) {
             updateUI(earthquakeRecords);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<List<EarthquakeRecord>> loader) {
-        Log.i(LOG_TAG, "onLoaderResetCalled called");
     }
 }

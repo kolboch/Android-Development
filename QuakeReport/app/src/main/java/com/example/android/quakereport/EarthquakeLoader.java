@@ -2,7 +2,6 @@ package com.example.android.quakereport;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.util.Log;
 
 import java.util.List;
 
@@ -12,16 +11,15 @@ import java.util.List;
 
 public class EarthquakeLoader extends AsyncTaskLoader<List<EarthquakeRecord>> {
 
-    private String[]urls;
+    private String[] urls;
 
-    public EarthquakeLoader(Context context, String[]urls){
+    public EarthquakeLoader(Context context, String[] urls) {
         super(context);
         this.urls = urls;
     }
 
     @Override
     public List<EarthquakeRecord> loadInBackground() {
-        Log.i("Loader", "loadInBackground called");
         List<EarthquakeRecord> earthquakes = null;
         if (urls.length != 0 && urls[0] != null) {
             earthquakes = QueryUtils.fetchEarthquakes(urls[0]);
@@ -30,8 +28,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthquakeRecord>> {
     }
 
     @Override
-    protected void onStartLoading(){
-        Log.i("Loader", "onStartLoading() called");
+    protected void onStartLoading() {
         super.onStartLoading();
         forceLoad();
     }
