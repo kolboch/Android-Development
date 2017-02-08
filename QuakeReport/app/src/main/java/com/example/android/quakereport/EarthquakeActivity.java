@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,12 +36,18 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     private ArrayList<EarthquakeRecord> earthquakes;
+    private TextView noItemsTextView;
+    private ListView earthquakesListView;
     private static final String QUERY_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=4&limit=10";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
+
+        noItemsTextView = (TextView) findViewById(R.id.no_items_textView);
+        earthquakesListView = (ListView) findViewById(R.id.list);
+        earthquakesListView.setEmptyView(noItemsTextView);
 
         getLoaderManager().initLoader(0, null, this);
     }
@@ -68,16 +75,13 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
     private void updateUI(List<EarthquakeRecord> earthquakesRecord) {
         this.earthquakes = (ArrayList) earthquakesRecord;
-        // Find a reference to the {@link ListView} in the layout
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
-
         // Create a new {@link ArrayAdapter} of earthquakes
         EarthquakeRecordAdapter earthquakesAdapter = new EarthquakeRecordAdapter(this, earthquakes);
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(earthquakesAdapter);
-        setListItemsURLs(earthquakeListView);
+        earthquakesListView.setAdapter(earthquakesAdapter);
+        setListItemsURLs(earthquakesListView);
     }
 
     @Override
@@ -88,12 +92,18 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
     @Override
     public void onLoadFinished(Loader<List<EarthquakeRecord>> loader, List<EarthquakeRecord> earthquakeRecords) {
-        if (earthquakeRecords != null) {
+        if (earthquakeRecords != null && !earthquakeRecords.isEmpty()) {
             updateUI(earthquakeRecords);
+        } else {
+            setNoItemsText();
         }
     }
 
     @Override
     public void onLoaderReset(Loader<List<EarthquakeRecord>> loader) {
+    }
+
+    private void setNoItemsText() {
+        noItemsTextView.setText(R.string.no_earthquakes);
     }
 }
