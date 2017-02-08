@@ -17,6 +17,7 @@ package com.example.android.quakereport;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,35 +28,24 @@ import android.widget.ListView;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+    private ArrayList<EarthquakeRecord> earthquakes;
+    private static final String QUERY_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=4&limit=10";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Create list of earthquake locations.
-        ArrayList<EarthquakeRecord> earthquakes = QueryUtils.extractEarthquakes();
-
-        // Find a reference to the {@link ListView} in the layout
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
-
-        // Create a new {@link ArrayAdapter} of earthquakes
-        EarthquakeRecordAdapter earthquakesAdapter = new EarthquakeRecordAdapter(this, earthquakes);
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(earthquakesAdapter);
-        setListItemsURLs(earthquakeListView);
-
-
+        new DataDownloader().execute(QUERY_URL);
     }
 
-    private void setListItemsURLs(final ListView lv){
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+    private void setListItemsURLs(final ListView lv) {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
                 EarthquakeRecord item = (EarthquakeRecord) lv.getAdapter().getItem(position);
@@ -68,10 +58,43 @@ public class EarthquakeActivity extends AppCompatActivity {
                     Log.e(LOG_TAG, "Error when creating url from url string.");
                     e.printStackTrace();
                 }
-                if(intent != null){
+                if (intent != null) {
                     startActivity(intent);
                 }
             }
         });
+    }
+
+    private void updateUI(List<EarthquakeRecord> earthquakesRecord) {
+        this.earthquakes = (ArrayList)earthquakesRecord;
+        // Find a reference to the {@link ListView} in the layout
+        ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+        // Create a new {@link ArrayAdapter} of earthquakes
+        EarthquakeRecordAdapter earthquakesAdapter = new EarthquakeRecordAdapter(this, earthquakes);
+
+        // Set the adapter on the {@link ListView}
+        // so the list can be populated in the user interface
+        earthquakeListView.setAdapter(earthquakesAdapter);
+        setListItemsURLs(earthquakeListView);
+    }
+
+    private class DataDownloader extends AsyncTask<String, Void, List<EarthquakeRecord>> {
+        @Override
+        protected List<EarthquakeRecord> doInBackground(String... urls) {
+            List<EarthquakeRecord> earthquakes = null;
+            if (urls.length != 0 && urls[0] != null) {
+                earthquakes = QueryUtils.fetchEarthquakes(urls[0]);
+            }
+            return earthquakes;
+        }
+
+        @Override
+        protected void onPostExecute(List<EarthquakeRecord> earthquakeRecords) {
+            if (earthquakeRecords != null) {
+                updateUI(earthquakeRecords);
+            }
+        }
+
     }
 }
