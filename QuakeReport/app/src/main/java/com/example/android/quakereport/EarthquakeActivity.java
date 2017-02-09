@@ -49,7 +49,12 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
         earthquakesListView = (ListView) findViewById(R.id.list);
         earthquakesListView.setEmptyView(noItemsTextView);
 
-        getLoaderManager().initLoader(0, null, this);
+        if(NetworkUtils.isInternetConnection(this)) {
+            getLoaderManager().initLoader(0, null, this);
+        }else{
+            hideProgressBar();
+            displayNoInternetConnection();
+        }
     }
 
     private void setListItemsURLs(final ListView lv) {
@@ -96,7 +101,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
         if (earthquakeRecords != null && !earthquakeRecords.isEmpty()) {
             updateUI(earthquakeRecords);
         } else {
-            setNoItemsText();
+            displayNoItemsToShow();
         }
     }
 
@@ -104,8 +109,11 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     public void onLoaderReset(Loader<List<EarthquakeRecord>> loader) {
     }
 
-    private void setNoItemsText() {
+    private void displayNoItemsToShow() {
         noItemsTextView.setText(R.string.no_earthquakes);
+    }
+    private void displayNoInternetConnection(){
+        noItemsTextView.setText(R.string.no_internet);
     }
 
     private void hideProgressBar(){
