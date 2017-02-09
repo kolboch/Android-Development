@@ -18,10 +18,14 @@ package com.example.android.quakereport;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -38,7 +42,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     private ArrayList<EarthquakeRecord> earthquakes;
     private TextView noItemsTextView;
     private ListView earthquakesListView;
-    private static final String QUERY_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=4&limit=10";
+    private static final String QUERY_URL_BASE = "http://earthquake.usgs.gov/fdsnws/event/1/query";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +53,29 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
         earthquakesListView = (ListView) findViewById(R.id.list);
         earthquakesListView.setEmptyView(noItemsTextView);
 
-        if(NetworkUtils.isInternetConnection(this)) {
+        if (NetworkUtils.isInternetConnection(this)) {
             getLoaderManager().initLoader(0, null, this);
-        }else{
+        } else {
             hideProgressBar();
             displayNoInternetConnection();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setListItemsURLs(final ListView lv) {
@@ -91,7 +112,18 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
     @Override
     public Loader<List<EarthquakeRecord>> onCreateLoader(int i, Bundle bundle) {
-        EarthquakeLoader loader = new EarthquakeLoader(getApplicationContext(), new String[]{QUERY_URL});
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String minMagnitude = sharedPrefs.getString(
+                getString(R.string.settings_min_magnitude_key),
+                getString(R.string.setting_min_magnitude_default));
+        Uri baseUri = Uri.parse(QUERY_URL_BASE);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+        uriBuilder.appendQueryParameter("format", "geojson");
+        uriBuilder.appendQueryParameter("limit", "10");
+        uriBuilder.appendQueryParameter("minmag", minMagnitude);
+        uriBuilder.appendQueryParameter("orderby", "time");
+
+        EarthquakeLoader loader = new EarthquakeLoader(this, new String[]{uriBuilder.toString()});
         return loader;
     }
 
@@ -112,11 +144,12 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     private void displayNoItemsToShow() {
         noItemsTextView.setText(R.string.no_earthquakes);
     }
-    private void displayNoInternetConnection(){
+
+    private void displayNoInternetConnection() {
         noItemsTextView.setText(R.string.no_internet);
     }
 
-    private void hideProgressBar(){
+    private void hideProgressBar() {
         findViewById(R.id.loading_spinner).setVisibility(View.GONE);
     }
 }
