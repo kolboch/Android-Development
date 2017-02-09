@@ -119,10 +119,13 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
         String orderBy = sharedPrefs.getString(
                 getString(R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_default));
+        String displayLimit = sharedPrefs.getString(
+                getString(R.string.settings_display_limit_key),
+                getString(R.string.settings_display_limit_default));
         Uri baseUri = Uri.parse(QUERY_URL_BASE);
         Uri.Builder uriBuilder = baseUri.buildUpon();
         uriBuilder.appendQueryParameter("format", "geojson");
-        uriBuilder.appendQueryParameter("limit", "10");
+        uriBuilder.appendQueryParameter("limit", displayLimit);
         uriBuilder.appendQueryParameter("minmag", minMagnitude);
         uriBuilder.appendQueryParameter("orderby", orderBy);
 

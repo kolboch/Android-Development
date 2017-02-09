@@ -28,9 +28,11 @@ public class SettingsActivity extends AppCompatActivity {
 
             Preference minMagnitude = findPreference(getString(R.string.settings_min_magnitude_key));
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
+            Preference maxToDisplay = findPreference(getString(R.string.settings_display_limit_key));
 
             bindPreferenceSummaryToValue(minMagnitude);
             bindPreferenceSummaryToValue(orderBy);
+            bindPreferenceSummaryToValue(maxToDisplay);
         }
 
         private void bindPreferenceSummaryToValue(Preference preference) {
