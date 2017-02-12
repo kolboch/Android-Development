@@ -18,23 +18,24 @@ public class DayForecast {
         this.weathers = weathers;
     }
 
+    /**
+     * get date of this day
+     */
     public String getDate() {
         return date;
     }
 
+    /**
+     * get dayName of this day
+     */
     public String getDayName() {
         return dayName;
     }
 
+    /**
+     * get all weather forecast for this day as array
+     */
     public Weather[] getWeathers() {
         return weathers;
-    }
-
-    public Weather getWeather(int index){
-        if(index < weathers.length){
-            return weathers[index];
-        }else{
-            return null;
-        }
     }
 }
