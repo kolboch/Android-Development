@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">City Weather Forecast</string>
+    <string name="app_name">5 Day Weather Forecast</string>
+    <string name="day_sample">Wednesday</string>
 </resources>

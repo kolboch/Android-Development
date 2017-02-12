@@ -9,10 +9,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="dev.kb.cityweatherforecast.MainActivity">
+    tools:context="dev.kb.cityweatherforecast.WeatherForecastMain">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+    <ListView
+        android:id="@+id/list_day_forecasts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
 </RelativeLayout>

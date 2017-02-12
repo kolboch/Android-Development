@@ -6,26 +6,45 @@ package dev.kb.cityweatherforecast;
 
 public class Weather {
 
-    // private int hour ??
+    /* hour of taking measure */
+    private String measureHour;
     private double temperature;
     private double pressure;
+    /* id for weather to determine weather type according to 'openweathermap' id's" */
     private int weatherID;
 
-    public Weather(double temperature, double pressure, int weatherID){
+    public Weather(double temperature, double pressure, int weatherID, String measureHour) {
         this.temperature = temperature;
         this.pressure = pressure;
         this.weatherID = weatherID;
+        this.measureHour = measureHour;
     }
 
-    public double getTemperature(){
+    /**
+     * get predicted temperature
+     */
+    public double getTemperature() {
         return temperature;
     }
 
-    public double getPressure(){
+    /**
+     * get predicted atmospheric pressure
+     */
+    public double getPressure() {
         return pressure;
     }
 
-    public int getWeatherID(){
+    /**
+     * get specified for this weather weatherID
+     */
+    public int getWeatherID() {
         return weatherID;
+    }
+
+    /**
+     * get hour
+     */
+    public String getMeasureHour() {
+        return measureHour;
     }
 }
