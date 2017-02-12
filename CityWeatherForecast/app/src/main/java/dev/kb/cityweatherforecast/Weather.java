@@ -6,18 +6,18 @@ package dev.kb.cityweatherforecast;
 
 public class Weather {
 
-    /* hour of taking measure */
-    private String measureHour;
+    /* date for prediction */
+    private long date;
     private double temperature;
     private double pressure;
     /* id for weather to determine weather type according to 'openweathermap' id's" */
     private int weatherID;
 
-    public Weather(double temperature, double pressure, int weatherID, String measureHour) {
+    public Weather(double temperature, double pressure, int weatherID, long date) {
         this.temperature = temperature;
         this.pressure = pressure;
         this.weatherID = weatherID;
-        this.measureHour = measureHour;
+        this.date = date;
     }
 
     /**
@@ -42,9 +42,9 @@ public class Weather {
     }
 
     /**
-     * get hour
+     * get date
      */
-    public String getMeasureHour() {
-        return measureHour;
+    public long getDate() {
+        return date;
     }
 }
