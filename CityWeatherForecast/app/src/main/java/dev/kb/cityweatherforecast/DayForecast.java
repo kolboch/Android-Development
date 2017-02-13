@@ -1,28 +1,21 @@
 package dev.kb.cityweatherforecast;
 
+import java.util.ArrayList;
+
 /**
  * Created by Karol on 2017-02-12.
  */
 
 public class DayForecast {
-    /* date string */
-    private String date;
+
     /* name of day */
     private String dayName;
     /* array of weathers */
-    private Weather[] weathers;
+    private ArrayList<Weather> weathers;
 
-    public DayForecast(String date, String dayName, Weather[] weathers) {
-        this.date = date;
+    public DayForecast(String dayName, ArrayList<Weather> weathers) {
         this.dayName = dayName;
         this.weathers = weathers;
-    }
-
-    /**
-     * get date of this day
-     */
-    public String getDate() {
-        return date;
     }
 
     /**
@@ -35,7 +28,7 @@ public class DayForecast {
     /**
      * get all weather forecast for this day as array
      */
-    public Weather[] getWeathers() {
+    public ArrayList<Weather> getWeathers() {
         return weathers;
     }
 }

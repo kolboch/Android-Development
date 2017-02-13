@@ -12,12 +12,14 @@ public class Weather {
     private double pressure;
     /* id for weather to determine weather type according to 'openweathermap' id's" */
     private int weatherID;
+    private int hour;
 
-    public Weather(double temperature, double pressure, int weatherID, long date) {
+    public Weather(double temperature, double pressure, int weatherID, long date, int hour) {
         this.temperature = temperature;
         this.pressure = pressure;
         this.weatherID = weatherID;
         this.date = date;
+        this.hour = hour;
     }
 
     /**
@@ -46,5 +48,12 @@ public class Weather {
      */
     public long getDate() {
         return date;
+    }
+
+    /**
+     * get hour for weather prediction
+     */
+    public int getHour() {
+        return hour;
     }
 }
