@@ -143,6 +143,7 @@ public class QueryUtils {
             if (current.getHour() == 21) {
                 dayForecasts++;
                 forecasts.add(new DayForecast(getDayOfWeek(current.getDate(), context), bufferDayForecast));
+                bufferDayForecast = new ArrayList<>(); // a must !, without data conflicts
             }
         }
         return forecasts;

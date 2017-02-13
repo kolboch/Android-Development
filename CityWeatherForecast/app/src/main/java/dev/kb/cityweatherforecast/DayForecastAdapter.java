@@ -2,6 +2,7 @@ package dev.kb.cityweatherforecast;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
  */
 
 public class DayForecastAdapter extends ArrayAdapter<DayForecast> {
+
+    private static final String LOG_ADAPTER = DayForecastAdapter.class.getName();
 
     public DayForecastAdapter(Context context, ArrayList<DayForecast> objects) {
         super(context, 0, objects);
@@ -40,7 +43,7 @@ public class DayForecastAdapter extends ArrayAdapter<DayForecast> {
     private int getBackgroundBanner(ArrayList<Weather> weathers) {
         int code;
         if(weathers != null){
-            code = getBackgroundResourceFromWeatherCode(weathers.get(0).getWeatherID());
+            code = weathers.get(0).getWeatherID();
         }
         else{
             code = -1;
@@ -51,6 +54,8 @@ public class DayForecastAdapter extends ArrayAdapter<DayForecast> {
     /* get relevant resource for given weather code */
     private int getBackgroundResourceFromWeatherCode(int weatherCode) {
         int imageResource;
+        Log.i(LOG_ADAPTER, "Weathercode: " + weatherCode);
+        Log.i(LOG_ADAPTER, "Weathercode / 100: " + weatherCode / 100);
         switch (weatherCode / 100) {
             case 8:
                 imageResource = R.drawable.bluesky_banner_800;
