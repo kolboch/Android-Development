@@ -29,7 +29,7 @@ public class DayForecastAdapter extends ArrayAdapter<DayForecast> {
         }
         DayForecast current = getItem(position);
         /* set icon */
-        listItemView.setBackgroundResource(getRelevantIconResource(current.getWeathers()));
+        listItemView.setBackgroundResource(getBackgroundBanner(current.getWeathers()));
         /* set day name */
         TextView dayForecastText = (TextView) listItemView.findViewById(R.id.banner_text_view);
         dayForecastText.setText(current.getDayName());
@@ -37,22 +37,45 @@ public class DayForecastAdapter extends ArrayAdapter<DayForecast> {
         return listItemView;
     }
 
-    /* icon should be based on most appearing weather, now for test it takes first one */
-    private int getRelevantIconResource(Weather[] weathers) {
-        return getResourceForCode(weathers[0].getWeatherID());
+    private int getBackgroundBanner(ArrayList<Weather> weathers) {
+        int code;
+        if(weathers != null){
+            code = getBackgroundResourceFromWeatherCode(weathers.get(0).getWeatherID());
+        }
+        else{
+            code = -1;
+        }
+        return getBackgroundResourceFromWeatherCode(code);
     }
 
-    /* base case not fully developed */
-    private int getResourceForCode(int weatherCode) {
+    /* get relevant resource for given weather code */
+    private int getBackgroundResourceFromWeatherCode(int weatherCode) {
         int imageResource;
-        switch (weatherCode) {
-            case 800:
-                imageResource = R.drawable.bluesky_banner;
+        switch (weatherCode / 100) {
+            case 8:
+                imageResource = R.drawable.bluesky_banner_800;
+                break;
+            case 7:
+                imageResource = R.drawable.atmosphere_banner_700;
+                break;
+            case 6:
+                imageResource = R.drawable.snow_banner_600;
+                break;
+            case 5:
+                imageResource = R.drawable.rain_banner_500;
+                break;
+            case 2:
+                imageResource = R.drawable.thunderstorm_banner_200;
                 break;
             default:
-                imageResource = R.drawable.rain_banner;
+                imageResource = R.drawable.default_banner;
                 break;
         }
         return imageResource;
+    }
+
+    private int getIconFromWeatherCode(int weatherCode){
+        //TODO
+        return 0;
     }
 }
