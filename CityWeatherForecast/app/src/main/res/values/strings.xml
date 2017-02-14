@@ -11,4 +11,11 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
+
+    <!-- special cases messages -->
+    <string name="no_internet">No Internet connectivity :/</string>
+    <string name="no_items">No items to display :(</string>
+
+    <!-- view test text's -->
+    <string name="test_error_message">No Internet connectivity</string>
 </resources>

@@ -19,4 +19,12 @@
         android:orientation="vertical"
         android:divider="@null"
         android:dividerHeight="0dp"/>
+
+    <TextView
+        android:id="@+id/error_message_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/test_error_message"
+        android:textAppearance="?android:textAppearanceLarge"/>
 </RelativeLayout>
