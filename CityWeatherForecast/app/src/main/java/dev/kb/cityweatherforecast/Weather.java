@@ -10,14 +10,14 @@ public class Weather {
     private long date;
     private double temperature;
     private double pressure;
-    /* id for weather to determine weather type according to 'openweathermap' id's" */
-    private int weatherID;
+    /* code for weather to determine weather type according to 'openweathermap' id's" */
+    private int weatherCode;
     private int hour;
 
-    public Weather(double temperature, double pressure, int weatherID, long date, int hour) {
+    public Weather(double temperature, double pressure, int weatherCode, long date, int hour) {
         this.temperature = temperature;
         this.pressure = pressure;
-        this.weatherID = weatherID;
+        this.weatherCode = weatherCode;
         this.date = date;
         this.hour = hour;
     }
@@ -37,10 +37,10 @@ public class Weather {
     }
 
     /**
-     * get specified for this weather weatherID
+     * get specified for this weather weatherCode
      */
-    public int getWeatherID() {
-        return weatherID;
+    public int getWeatherCode() {
+        return weatherCode;
     }
 
     /**
