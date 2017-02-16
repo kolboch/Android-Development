@@ -1,13 +1,17 @@
 package dev.kb.cityweatherforecast;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Karol on 2017-02-12.
@@ -18,6 +22,7 @@ public class DayForecastAdapter extends BaseExpandableListAdapter {
     private static final String LOG_ADAPTER = DayForecastAdapter.class.getName();
     private Context context;
     private ArrayList<DayForecast> forecastList;
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public DayForecastAdapter(Context context, ArrayList<DayForecast> forecastList) {
         this.context = context;
@@ -93,12 +98,12 @@ public class DayForecastAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
     public long getChildId(int i, int i1) {
-        return 0;
+        return i * 100 + i1;
     }
 
     @Override
@@ -122,22 +127,35 @@ public class DayForecastAdapter extends BaseExpandableListAdapter {
     }
 
     private String formatTemperature(double temperature) {
-        //TODO check in preferences for format and append K or C to degrees
-        return (int) temperature + "";
+        String toAppend;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.context);
+        String prefUnit = preferences.getString(context.getString(R.string.settings_temp_unit_key), context.getString(R.string.settings_temp_unit_default));
+        if (prefUnit == context.getString(R.string.settings_temp_celsius_value)) {
+            toAppend = "°C";
+        } else if (prefUnit == context.getString(R.string.settings_temp_kelvin_value)) {
+            toAppend = " K";
+        } else {
+            toAppend = "°F";
+        }
+        return (int) temperature + toAppend;
     }
 
     private String dateFromUnixTimestamp(long date) {
-        //TODO
-        return "17-08-2020";
+        Date d = new Date(date * 1000);
+        return dateFormat.format(d);
     }
 
+    /**
+     * formats given atmospheric pressure to String representation
+     */
     private String formatPressure(double pressure) {
-        //TODO verify if all cases would be right with that approach
         return (int) pressure + " hPa";
     }
 
+    /**
+     * formats given hour to string representation
+     */
     private String formatHour(int hour) {
-        //TODO format with some pattern
         return hour + ":00";
     }
 }

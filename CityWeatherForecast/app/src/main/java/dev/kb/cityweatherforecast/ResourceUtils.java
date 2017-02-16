@@ -9,6 +9,8 @@ public class ResourceUtils {
         switch (weatherCode / 100) {
             case 8:
                 return getIconResource_8XX(weatherCode);
+            case 7:
+                return R.drawable.icon_7xx;
             case 6:
                 return R.drawable.icon_6xx;
             case 5:
@@ -16,8 +18,7 @@ public class ResourceUtils {
             case 2:
                 return R.drawable.icon_2xx;
             default:
-                //TODO create default icon
-                return R.drawable.icon_800;
+                return R.drawable.icon_default;
         }
     }
 
@@ -33,8 +34,7 @@ public class ResourceUtils {
             case 804:
                 return R.drawable.icon_803_804;
             default:
-                //TODO create default icon
-                return R.drawable.icon_800;
+                return R.drawable.icon_default;
         }
     }
 
@@ -46,7 +46,7 @@ public class ResourceUtils {
             case 503:
             case 504:
                 return R.drawable.icon_500_to_504;
-            default:
+            default: // other 5XX cases
                 return R.drawable.icon_520plus;
         }
     }
@@ -54,6 +54,7 @@ public class ResourceUtils {
     /* get relevant background resource for expandable list_item with given weather code */
     public static int getBackgroundResourceFromWeatherCode(int weatherCode) {
         int imageResource;
+        /* weatherCodes are grouped and hundreds number indicates weather group */
         switch (weatherCode / 100) {
             case 8:
                 imageResource = R.drawable.bluesky_banner_800;
