@@ -22,7 +22,7 @@ public class DayForecastAdapter extends BaseExpandableListAdapter {
     private static final String LOG_ADAPTER = DayForecastAdapter.class.getName();
     private Context context;
     private ArrayList<DayForecast> forecastList;
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM");
 
     public DayForecastAdapter(Context context, ArrayList<DayForecast> forecastList) {
         this.context = context;

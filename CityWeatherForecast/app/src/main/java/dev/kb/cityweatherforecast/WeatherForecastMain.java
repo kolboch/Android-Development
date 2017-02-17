@@ -20,9 +20,6 @@ import java.util.List;
 
 public class WeatherForecastMain extends AppCompatActivity implements LoaderCallbacks<List<DayForecast>> {
 
-    //TODO info about city of current weather shown
-    //TODO add preferences for city with gentle country code handling
-
     private static final String LOG_TAG = WeatherForecastMain.class.getName();
     private ArrayList<DayForecast> forecasts;
     private ExpandableListView forecastsExpandableListView;
