@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -18,7 +19,6 @@ import java.util.List;
 
 public class WeatherForecastMain extends AppCompatActivity implements LoaderCallbacks<List<DayForecast>> {
 
-    //TODO add spinner for loading
     //TODO add preferences for city with gentle country code handling
     //TODO consider downloading query_APPID from some server or sth ?
 
@@ -41,6 +41,7 @@ public class WeatherForecastMain extends AppCompatActivity implements LoaderCall
         if (NetworkUtils.isInternetConnection(getApplicationContext())) {
             getLoaderManager().initLoader(0, null, this);
         } else {
+            hideProgressBar();
             setErrorTextViewMessage(R.string.no_internet);
         }
     }
@@ -63,6 +64,7 @@ public class WeatherForecastMain extends AppCompatActivity implements LoaderCall
 
     @Override
     public void onLoadFinished(Loader<List<DayForecast>> loader, List<DayForecast> dayForecasts) {
+        hideProgressBar();
         if (dayForecasts != null && !dayForecasts.isEmpty()) {
             updateUI(dayForecasts);
         } else {
@@ -99,5 +101,9 @@ public class WeatherForecastMain extends AppCompatActivity implements LoaderCall
 
     private void setErrorTextViewMessage(int stringResource) {
         errorTextView.setText(stringResource);
+    }
+
+    private void hideProgressBar() {
+        findViewById(R.id.progress_bar_main).setVisibility(View.GONE);
     }
 }
