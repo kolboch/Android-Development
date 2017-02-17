@@ -10,6 +10,7 @@
         android:layout_height="64dp"
         android:background="@drawable/icon_800"
         android:gravity="center"
+        android:textAppearance="?android:textAppearanceListItem"
         android:text="@string/test_temperature_text"/>
 
     <TextView

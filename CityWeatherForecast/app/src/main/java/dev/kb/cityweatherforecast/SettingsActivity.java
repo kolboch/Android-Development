@@ -28,6 +28,9 @@ public class SettingsActivity extends AppCompatActivity {
 
             Preference temperatureUnit = findPreference(getString(R.string.settings_temp_unit_key));
             bindPreferenceSummaryToValue(temperatureUnit);
+
+            Preference city = findPreference(getString(R.string.settings_city_key));
+            bindPreferenceSummaryToValue(city);
         }
 
         @Override

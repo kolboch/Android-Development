@@ -11,10 +11,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="dev.kb.cityweatherforecast.WeatherForecastMain">
 
+    <TextView
+        android:id="@+id/city_country_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:text="@string/test_city_country_text"/>
+
     <ExpandableListView
         android:id="@+id/list_day_forecasts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/city_country_text_view"
         android:layout_centerInParent="true"
         android:divider="@null"
         android:dividerHeight="0dp"

@@ -91,6 +91,13 @@ public class QueryUtils {
                 JSONObject root = new JSONObject(jsonData);
                 JSONArray listOfForecasts = root.getJSONArray("list");
 
+                //getting and setting data common for all fetched forecasts
+                JSONObject city = root.getJSONObject("city");
+                String name = city.getString("name");
+                String countryCode = city.getString("country");
+                DayForecast.setCityName(name);
+                DayForecast.setCountryCode(countryCode);
+
                 //declared outside loop to process faster
                 JSONObject forecast, main, weatherJsonObject;
                 JSONArray weatherJsonArray;

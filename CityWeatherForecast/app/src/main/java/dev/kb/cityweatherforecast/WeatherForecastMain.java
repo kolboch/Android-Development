@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,14 +20,14 @@ import java.util.List;
 
 public class WeatherForecastMain extends AppCompatActivity implements LoaderCallbacks<List<DayForecast>> {
 
+    //TODO info about city of current weather shown
     //TODO add preferences for city with gentle country code handling
-    //TODO consider downloading query_APPID from some server or sth ?
 
     private static final String LOG_TAG = WeatherForecastMain.class.getName();
     private ArrayList<DayForecast> forecasts;
     private ExpandableListView forecastsExpandableListView;
     private TextView errorTextView;
-    private static final String query_BASE = "http://api.openweathermap.org/data/2.5/forecast?q=Paris,fr";
+    private static final String query_BASE = "http://api.openweathermap.org/data/2.5/forecast?";
     private static final String query_APPID = "737490f14eb57485aa7928ce8e2c8a41";
 
     @Override
@@ -51,13 +52,15 @@ public class WeatherForecastMain extends AppCompatActivity implements LoaderCall
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String temperatureUnit = preferences.getString(getString(R.string.settings_temp_unit_key),
                 getString(R.string.settings_temp_unit_default));
-
+        String city = preferences.getString(getString(R.string.settings_city_key),
+                getString(R.string.settings_city_default));
         Uri baseUri = Uri.parse(query_BASE);
         Uri.Builder builder = baseUri.buildUpon();
+        builder.appendQueryParameter("q", city);
         builder.appendQueryParameter("units", temperatureUnit);
 
         builder.appendQueryParameter("appid", query_APPID); // api access code
-
+        Log.i(LOG_TAG, builder.toString());
         ForecastLoader loader = new ForecastLoader(builder.toString(), getApplicationContext());
         return loader;
     }
@@ -97,6 +100,13 @@ public class WeatherForecastMain extends AppCompatActivity implements LoaderCall
         this.forecasts = (ArrayList) forecast;
         DayForecastAdapter adapter = new DayForecastAdapter(this, forecasts);
         forecastsExpandableListView.setAdapter(adapter);
+        updateCityCountryTextView();
+    }
+
+    private void updateCityCountryTextView() {
+        TextView cityCountryView = (TextView) findViewById(R.id.city_country_text_view);
+        String text = DayForecast.getCityName() + ", " + DayForecast.getCountryCode();
+        cityCountryView.setText(text);
     }
 
     private void setErrorTextViewMessage(int stringResource) {

@@ -11,4 +11,10 @@
         android:key="@string/settings_temp_unit_key"
         android:title="@string/settings_temp_unit_label"/>
 
+    <EditTextPreference
+        android:defaultValue="@string/settings_city_default"
+        android:inputType="textCapWords"
+        android:key="@string/settings_city_key"
+        android:title="@string/settings_city_label"/>
+
 </PreferenceScreen>

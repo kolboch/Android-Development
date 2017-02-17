@@ -130,13 +130,17 @@ public class DayForecastAdapter extends BaseExpandableListAdapter {
         String toAppend;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.context);
         String prefUnit = preferences.getString(context.getString(R.string.settings_temp_unit_key), context.getString(R.string.settings_temp_unit_default));
-        if (prefUnit == context.getString(R.string.settings_temp_celsius_value)) {
+        if (prefUnit.equals(context.getString(R.string.settings_temp_celsius_value))) {
             toAppend = "°C";
-        } else if (prefUnit == context.getString(R.string.settings_temp_kelvin_value)) {
+        } else if (prefUnit.equals(context.getString(R.string.settings_temp_fahrenheit_value))) {
+            toAppend = "°F";
+        } else if (prefUnit.equals(context.getString(R.string.settings_temp_kelvin_value))) {
             toAppend = " K";
         } else {
-            toAppend = "°F";
+            toAppend = "";
         }
+
+
         return (int) temperature + toAppend;
     }
 
