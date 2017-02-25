@@ -25,10 +25,10 @@ import java.util.List;
 public class WordAdapter extends ArrayAdapter<Word> {
 
     private int backgroundColor;
-    private static MediaPlayer player;
-    private static AudioManager.OnAudioFocusChangeListener afChangeListener;
-    private static AudioManager audioManager;
-    private static OnCompletionListener onCompletionListener;
+    private MediaPlayer player;
+    private AudioManager.OnAudioFocusChangeListener afChangeListener;
+    private AudioManager audioManager;
+    private OnCompletionListener onCompletionListener;
 
     {
         afChangeListener = new OnAudioFocusChangeListener() {
@@ -36,14 +36,15 @@ public class WordAdapter extends ArrayAdapter<Word> {
             public void onAudioFocusChange(int focusChange) {
                 switch (focusChange) {
                     case AudioManager.AUDIOFOCUS_GAIN:
-                        player.start();
+                        if (player != null) {
+                            player.start();
+                        }
                         break;
                     case AudioManager.AUDIOFOCUS_LOSS:
+
+                    case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                    case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                         releasePlayer();
-                        break;
-                    case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                        player.pause();
-                        player.seekTo(0);
                         break;
                 }
             }
@@ -100,9 +101,9 @@ public class WordAdapter extends ArrayAdapter<Word> {
                     releasePlayer();
                     //requesting audio focus
                     int requestResult = audioManager.requestAudioFocus(afChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
-                    if(requestResult == AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
+                    if (requestResult == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                         // media player for current item
-                        player = player.create(WordAdapter.this.getContext(), audioResource);
+                        player = MediaPlayer.create(WordAdapter.this.getContext(), audioResource);
                         player.start();
                     }
                     player.setOnCompletionListener(onCompletionListener);
@@ -123,7 +124,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
         }
     }
 
-    public void releaseResources() {
+    public void releaseResources(){
         releasePlayer();
     }
 }
