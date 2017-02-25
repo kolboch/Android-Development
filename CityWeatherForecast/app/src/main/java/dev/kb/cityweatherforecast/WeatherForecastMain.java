@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class WeatherForecastMain extends AppCompatActivity implements LoaderCall
     private TextView errorTextView;
     private static final String query_BASE = "http://api.openweathermap.org/data/2.5/forecast?";
     private static final String query_APPID = "737490f14eb57485aa7928ce8e2c8a41";
+    private static boolean refreshCall = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class WeatherForecastMain extends AppCompatActivity implements LoaderCall
         builder.appendQueryParameter("appid", query_APPID); // api access code
         Log.i(LOG_TAG, builder.toString());
         ForecastLoader loader = new ForecastLoader(builder.toString(), getApplicationContext());
+
         return loader;
     }
 
@@ -69,6 +72,11 @@ public class WeatherForecastMain extends AppCompatActivity implements LoaderCall
             updateUI(dayForecasts);
         } else {
             setErrorTextViewMessage(R.string.no_items);
+        }
+        // if it was refresh call notify about data update
+        if (refreshCall) {
+            refreshCall = false;
+            Toast.makeText(this, R.string.toast_data_refresh, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -89,6 +97,10 @@ public class WeatherForecastMain extends AppCompatActivity implements LoaderCall
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
             return true;
+        }
+        if (id == R.id.action_refresh) {
+            refreshCall = true;
+            getLoaderManager().restartLoader(0, null, this);
         }
         return super.onOptionsItemSelected(item);
     }

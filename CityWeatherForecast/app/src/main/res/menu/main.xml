@@ -5,10 +5,18 @@
     tools:context=".WeatherForecastMain">
 
     <item
+        android:id="@+id/action_refresh"
+        android:title="@string/force_refresh_item"
+        android:icon="@drawable/ic_refresh_white"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_settings"
         android:title="@string/settings_menu_item"
         android:icon="@drawable/ic_settings_dark"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         app:showAsAction="ifRoom"/>
+
 
 </menu>
