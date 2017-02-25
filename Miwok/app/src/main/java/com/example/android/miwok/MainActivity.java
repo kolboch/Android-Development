@@ -15,70 +15,25 @@
  */
 package com.example.android.miwok;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-
-    private TextView numbers;
-    private TextView colors;
-    private TextView phrases;
-    private TextView family;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
-
-        numbers = (TextView) findViewById(R.id.numbers);
-        phrases = (TextView) findViewById(R.id.phrases);
-        colors = (TextView) findViewById(R.id.colors);
-        family = (TextView) findViewById(R.id.family);
-        setViewListeners();
+        //getting viewPager from activity_main
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        // creating adapter for viewPager
+        WordsFragmentPagerAdapter adapter = new WordsFragmentPagerAdapter(getSupportFragmentManager());
+        //setting adapter
+        viewPager.setAdapter(adapter);
     }
 
-    private void setViewListeners() {
-        if(numbers != null) {
-            numbers.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(MainActivity.this, NumbersActivity.class);
-                    startActivity(i);
-                }
-            });
-        }
-        if(phrases != null) {
-            phrases.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(MainActivity.this, PhrasesActivity.class);
-                    startActivity(i);
-                }
-            });
-        }
-        if(colors != null) {
-            colors.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(MainActivity.this, ColorsActivity.class);
-                    startActivity(i);
-                }
-            });
-        }
-        if(family != null) {
-            family.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(MainActivity.this, FamilyActivity.class);
-                    startActivity(i);
-                }
-            });
-        }
-    }
+
 
 }
