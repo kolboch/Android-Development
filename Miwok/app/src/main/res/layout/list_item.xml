@@ -29,7 +29,7 @@
             android:layout_weight="1"
 
             android:gravity="bottom"
-            android:textColor="@color/text_color"
+            android:textColor="@color/text_color_white"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="lutti"/>
@@ -40,7 +40,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="top"
-            android:textColor="@color/text_color"
+            android:textColor="@color/text_color_white"
             android:textSize="18sp"
             tools:text="one"/>
     </LinearLayout>
@@ -52,7 +52,7 @@
         android:layout_gravity="center_vertical"
         android:background="@null"
         android:text="@string/play_char"
-        android:textColor="@color/text_color"
+        android:textColor="@color/text_color_white"
         android:textSize="18sp"/>
 
 </LinearLayout>
