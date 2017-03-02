@@ -58,4 +58,13 @@
 
     <!-- Label for dropdown menu option if the pet is female [CHAR LIMIT=20] -->
     <string name="gender_female">Female</string>
+
+    <!-- toast message for error when saving record in database -->
+    <string name="toast_record_save_fail">Failed to save record :(</string>
+
+    <!-- toast message for successfully saving record in database, add dynamic record id -->
+    <string name="toast_record_save_success">Record saved successfully with ID: </string>
+
+    <!-- toast for informing user that providing name is a must in EditorActivity form -->
+    <string name="toast_must_provide_name">Must insert name before saving!</string>
 </resources>

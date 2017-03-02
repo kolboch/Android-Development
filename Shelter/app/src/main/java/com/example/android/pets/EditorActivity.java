@@ -15,10 +15,14 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,24 +30,42 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.android.pets.data.Pet;
 import com.example.android.pets.data.PetContract.PetEntry;
+import com.example.android.pets.data.PetDbHelper;
 
 /**
  * Allows user to create a new pet or edit an existing one.
  */
 public class EditorActivity extends AppCompatActivity {
-
-    /** EditText field to enter the pet's name */
+    /**
+     * constant for logs
+     */
+    private static final String LOG_TAG_EDITOR = EditorActivity.class.getSimpleName();
+    /**
+     * constant for checking error case
+     */
+    private static final long NOT_ENOUGH_DATA = -7;
+    /**
+     * EditText field to enter the pet's name
+     */
     private EditText mNameEditText;
 
-    /** EditText field to enter the pet's breed */
+    /**
+     * EditText field to enter the pet's breed
+     */
     private EditText mBreedEditText;
 
-    /** EditText field to enter the pet's weight */
+    /**
+     * EditText field to enter the pet's weight
+     */
     private EditText mWeightEditText;
 
-    /** EditText field to enter the pet's gender */
+    /**
+     * EditText field to enter the pet's gender
+     */
     private Spinner mGenderSpinner;
 
     /**
@@ -119,7 +141,12 @@ public class EditorActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Do nothing for now
+                long rowID = updateOrInsertData();
+                if(rowID != this.NOT_ENOUGH_DATA) {
+                    showActionSaveToast(rowID);
+                    Intent intent = new Intent(EditorActivity.this, CatalogActivity.class);
+                    startActivity(intent);
+                }
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
@@ -131,6 +158,66 @@ public class EditorActivity extends AppCompatActivity {
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * updates if modifying or inserts new data based on user input's
+     */
+    private long updateOrInsertData() {
+        long newRowID = NOT_ENOUGH_DATA;
+        try {
+            Pet pet = getPetFromInputs();
+
+            PetDbHelper helper = new PetDbHelper(this);
+            SQLiteDatabase database = helper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(PetEntry.COLUMN_PET_NAME, pet.getName());
+            values.put(PetEntry.COLUMN_PET_BREED, pet.getBreed());
+            values.put(PetEntry.COLUMN_PET_GENDER, pet.getGender());
+            values.put(PetEntry.COLUMN_PET_WEIGHT, pet.getWeight());
+
+            newRowID = database.insert(PetEntry.TABLE_NAME, null, values);
+        }
+        catch(NotEnoughDataProvidedException e){
+            Toast.makeText(this, R.string.toast_must_provide_name, Toast.LENGTH_SHORT).show();
+        }
+        return newRowID;
+    }
+
+    /**
+     * getting data from input View's
+     *
+     * @return Pet, created from user's input
+     */
+    private Pet getPetFromInputs() throws NotEnoughDataProvidedException{
+        String breed = this.mBreedEditText.getText().toString().trim();
+        String name = this.mNameEditText.getText().toString().trim();
+        if (TextUtils.isEmpty(name)) {
+            throw new NotEnoughDataProvidedException(R.string.toast_must_provide_name + "");
+        }
+        int weight;
+        String weightInput = mWeightEditText.getText().toString().trim();
+        if(TextUtils.isEmpty(weightInput)){
+            weight = 0;
+        }else{
+            weight = Integer.parseInt(weightInput);
+        }
+        Pet pet = new Pet(name, breed, mGender, weight);
+        return pet;
+    }
+
+    /**
+     * shows message based on saving result ( saved successfully or not)
+     * @param rowId
+     */
+    private void showActionSaveToast(long rowId) {
+        if (rowId == -1) {
+            Toast.makeText(this, R.string.toast_record_save_fail, Toast.LENGTH_SHORT).show();
+        } else {
+            Log.i(LOG_TAG_EDITOR, rowId + " ");
+            Toast.makeText(this, getResources().getString(R.string.toast_record_save_success) + rowId, Toast.LENGTH_SHORT).show();
+        }
     }
 }
