@@ -16,7 +16,6 @@
 package com.example.android.pets;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -144,8 +143,7 @@ public class EditorActivity extends AppCompatActivity {
                 long rowID = updateOrInsertData();
                 if(rowID != this.NOT_ENOUGH_DATA) {
                     showActionSaveToast(rowID);
-                    Intent intent = new Intent(EditorActivity.this, CatalogActivity.class);
-                    startActivity(intent);
+                    finish();
                 }
                 return true;
             // Respond to a click on the "Delete" menu option

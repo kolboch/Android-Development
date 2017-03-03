@@ -86,14 +86,37 @@ public class CatalogActivity extends AppCompatActivity {
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        // Perform this raw SQL query "SELECT * FROM pets"
-        // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PetEntry.TABLE_NAME, null);
+        String table = PetEntry.TABLE_NAME;
+        String[] columns = {PetEntry._ID, PetEntry.COLUMN_PET_NAME, PetEntry.COLUMN_PET_BREED, PetEntry.COLUMN_PET_GENDER};
+        String selection = PetEntry._ID + "> ?";
+        String[] selectionArgs = {"4"};
+        String orderBy = PetEntry.COLUMN_PET_NAME;
+        Cursor cursor = db.query(table, columns, selection, selectionArgs, null, null, orderBy, null);
         try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // pets table in the database).
             TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+            displayView.setText("data: ");
+            StringBuilder builder = new StringBuilder();
+            for(int i = 0; i < cursor.getColumnCount(); i++){
+                builder.append(cursor.getColumnName(i));
+                if(i < cursor.getColumnCount() - 1){
+                    builder.append(" | ");
+                }
+            }
+            builder.append("\n");
+            displayView.append(builder.toString());
+            builder.setLength(0);
+
+            while(cursor.moveToNext()){
+                for(int i = 0; i < cursor.getColumnCount(); i++){
+                    builder.append(cursor.getString(i));
+                    if(i < cursor.getColumnCount() - 1){
+                        builder.append(" | ");
+                    }
+                }
+                builder.append("\n");
+            }
+            displayView.append(builder.toString());
+            builder.setLength(0);
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
             // resources and makes it invalid.
