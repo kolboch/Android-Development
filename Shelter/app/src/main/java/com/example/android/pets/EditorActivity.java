@@ -15,8 +15,9 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +34,6 @@ import android.widget.Toast;
 
 import com.example.android.pets.data.Pet;
 import com.example.android.pets.data.PetContract.PetEntry;
-import com.example.android.pets.data.PetDbHelper;
 
 /**
  * Allows user to create a new pet or edit an existing one.
@@ -128,8 +128,6 @@ public class EditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_editor.xml file.
-        // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_editor, menu);
         return true;
     }
@@ -138,7 +136,6 @@ public class EditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
-            // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 long rowID = updateOrInsertData();
                 if(rowID != this.NOT_ENOUGH_DATA) {
@@ -146,13 +143,10 @@ public class EditorActivity extends AppCompatActivity {
                     finish();
                 }
                 return true;
-            // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Do nothing for now
                 return true;
-            // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
-                // Navigate back to parent activity (CatalogActivity)
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
         }
@@ -166,17 +160,18 @@ public class EditorActivity extends AppCompatActivity {
     private long updateOrInsertData() {
         long newRowID = NOT_ENOUGH_DATA;
         try {
-            Pet pet = getPetFromInputs();
+            Pet pet = getDataFromInputs();
 
-            PetDbHelper helper = new PetDbHelper(this);
-            SQLiteDatabase database = helper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(PetEntry.COLUMN_PET_NAME, pet.getName());
             values.put(PetEntry.COLUMN_PET_BREED, pet.getBreed());
             values.put(PetEntry.COLUMN_PET_GENDER, pet.getGender());
             values.put(PetEntry.COLUMN_PET_WEIGHT, pet.getWeight());
 
-            newRowID = database.insert(PetEntry.TABLE_NAME, null, values);
+            Uri resultUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
+            long id = ContentUris.parseId(resultUri);
+            showActionSaveToast(id);
+
         }
         catch(NotEnoughDataProvidedException e){
             Toast.makeText(this, R.string.toast_must_provide_name, Toast.LENGTH_SHORT).show();
@@ -189,7 +184,7 @@ public class EditorActivity extends AppCompatActivity {
      *
      * @return Pet, created from user's input
      */
-    private Pet getPetFromInputs() throws NotEnoughDataProvidedException{
+    private Pet getDataFromInputs() throws NotEnoughDataProvidedException{
         String breed = this.mBreedEditText.getText().toString().trim();
         String name = this.mNameEditText.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {

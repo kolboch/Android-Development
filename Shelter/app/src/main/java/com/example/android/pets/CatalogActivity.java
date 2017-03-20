@@ -15,10 +15,11 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.pets.data.PetContract.PetEntry;
-import com.example.android.pets.data.PetDbHelper;
 
 /**
  * Displays list of pets that were entered and stored in the app.
@@ -69,6 +69,7 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 insertPet();
+                displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
@@ -79,26 +80,16 @@ public class CatalogActivity extends AppCompatActivity {
     }
 
     private void displayDatabaseInfo() {
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        PetDbHelper mDbHelper = new PetDbHelper(this);
+        String[] columns = {PetEntry._ID, PetEntry.COLUMN_PET_NAME, PetEntry.COLUMN_PET_BREED, PetEntry.COLUMN_PET_GENDER, PetEntry.COLUMN_PET_WEIGHT};
+        Cursor cursor = getContentResolver().query(PetEntry.CONTENT_URI, columns, null, null, null);
 
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String table = PetEntry.TABLE_NAME;
-        String[] columns = {PetEntry._ID, PetEntry.COLUMN_PET_NAME, PetEntry.COLUMN_PET_BREED, PetEntry.COLUMN_PET_GENDER};
-        String selection = PetEntry._ID + "> ?";
-        String[] selectionArgs = {"4"};
-        String orderBy = PetEntry.COLUMN_PET_NAME;
-        Cursor cursor = db.query(table, columns, selection, selectionArgs, null, null, orderBy, null);
         try {
             TextView displayView = (TextView) findViewById(R.id.text_view_pet);
             displayView.setText("data: ");
             StringBuilder builder = new StringBuilder();
-            for(int i = 0; i < cursor.getColumnCount(); i++){
+            for (int i = 0; i < cursor.getColumnCount(); i++) {
                 builder.append(cursor.getColumnName(i));
-                if(i < cursor.getColumnCount() - 1){
+                if (i < cursor.getColumnCount() - 1) {
                     builder.append(" | ");
                 }
             }
@@ -106,10 +97,10 @@ public class CatalogActivity extends AppCompatActivity {
             displayView.append(builder.toString());
             builder.setLength(0);
 
-            while(cursor.moveToNext()){
-                for(int i = 0; i < cursor.getColumnCount(); i++){
+            while (cursor.moveToNext()) {
+                for (int i = 0; i < cursor.getColumnCount(); i++) {
                     builder.append(cursor.getString(i));
-                    if(i < cursor.getColumnCount() - 1){
+                    if (i < cursor.getColumnCount() - 1) {
                         builder.append(" | ");
                     }
                 }
@@ -124,17 +115,16 @@ public class CatalogActivity extends AppCompatActivity {
         }
     }
 
-    private void insertPet(){
-        PetDbHelper helper = new PetDbHelper(this);
-        SQLiteDatabase db = helper.getWritableDatabase();
+    private void insertPet() {
         ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_NAME, "Garfield");
         values.put(PetEntry.COLUMN_PET_BREED, "German shepperd");
         values.put(PetEntry.COLUMN_PET_GENDER, 1);
         values.put(PetEntry.COLUMN_PET_WEIGHT, 19);
-        long newRowId = db.insert(PetEntry.TABLE_NAME, null, values);
-        if(newRowId == -1){
-            Log.e(LOG_TAG_CATALOG, "Error when inserting row to database.");
+        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
+        long newRowId = ContentUris.parseId(newUri);
+        if (newRowId == -1) {
+            Log.e(LOG_TAG_CATALOG, getString(R.string.toast_record_save_fail));
         }
     }
 
