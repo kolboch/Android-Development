@@ -138,7 +138,7 @@ public class EditorActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_save:
                 long rowID = updateOrInsertData();
-                if(rowID != this.NOT_ENOUGH_DATA) {
+                if (rowID != this.NOT_ENOUGH_DATA) {
                     showActionSaveToast(rowID);
                     finish();
                 }
@@ -172,9 +172,10 @@ public class EditorActivity extends AppCompatActivity {
             long id = ContentUris.parseId(resultUri);
             showActionSaveToast(id);
 
-        }
-        catch(NotEnoughDataProvidedException e){
+        } catch (NotEnoughDataProvidedException e) {
             Toast.makeText(this, R.string.toast_must_provide_name, Toast.LENGTH_SHORT).show();
+        } catch (WeightNegativeException e) {
+            Toast.makeText(this, R.string.toast_negative_weight, Toast.LENGTH_SHORT).show();
         }
         return newRowID;
     }
@@ -184,17 +185,17 @@ public class EditorActivity extends AppCompatActivity {
      *
      * @return Pet, created from user's input
      */
-    private Pet getDataFromInputs() throws NotEnoughDataProvidedException{
+    private Pet getDataFromInputs() throws NotEnoughDataProvidedException {
         String breed = this.mBreedEditText.getText().toString().trim();
         String name = this.mNameEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(name)) {
+        if (name == null || TextUtils.isEmpty(name)) {
             throw new NotEnoughDataProvidedException(R.string.toast_must_provide_name + "");
         }
         int weight;
         String weightInput = mWeightEditText.getText().toString().trim();
-        if(TextUtils.isEmpty(weightInput)){
+        if (TextUtils.isEmpty(weightInput)) {
             weight = 0;
-        }else{
+        } else {
             weight = Integer.parseInt(weightInput);
         }
         Pet pet = new Pet(name, breed, mGender, weight);
@@ -203,6 +204,7 @@ public class EditorActivity extends AppCompatActivity {
 
     /**
      * shows message based on saving result ( saved successfully or not)
+     *
      * @param rowId
      */
     private void showActionSaveToast(long rowId) {

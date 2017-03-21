@@ -67,4 +67,7 @@
 
     <!-- toast for informing user that providing name is a must in EditorActivity form -->
     <string name="toast_must_provide_name">Must insert name before saving!</string>
+
+    <!-- tost for informing user that weight input can't be negative -->
+    <string name="toast_negative_weight">Weight must be greater than 0!</string>
 </resources>
