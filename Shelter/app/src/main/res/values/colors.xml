@@ -25,4 +25,9 @@
 
     <!-- Primary dark color for the editor -->
     <color name="editorColorPrimaryDark">#394450</color>
+
+    <!-- Text primary color -->
+    <color name="primaryTextColor">#100103</color>
+    <!-- Text faded color -->
+    <color name="fadedTextColor">#474747</color>
 </resources>

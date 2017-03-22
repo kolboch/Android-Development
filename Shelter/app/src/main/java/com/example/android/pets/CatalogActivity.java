@@ -27,7 +27,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.example.android.pets.data.PetContract.PetEntry;
 
@@ -37,12 +37,15 @@ import com.example.android.pets.data.PetContract.PetEntry;
 public class CatalogActivity extends AppCompatActivity {
 
     private static final String LOG_TAG_CATALOG = CatalogActivity.class.getSimpleName();
+    private ListView mListView;
+    private Cursor mCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
-
+        mListView = (ListView) findViewById(R.id.catalog_list_view);
+        mListView.setEmptyView(findViewById(R.id.empty_view));
         // Setup FAB to open EditorActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -81,38 +84,9 @@ public class CatalogActivity extends AppCompatActivity {
 
     private void displayDatabaseInfo() {
         String[] columns = {PetEntry._ID, PetEntry.COLUMN_PET_NAME, PetEntry.COLUMN_PET_BREED, PetEntry.COLUMN_PET_GENDER, PetEntry.COLUMN_PET_WEIGHT};
-        Cursor cursor = getContentResolver().query(PetEntry.CONTENT_URI, columns, null, null, null);
-
-        try {
-            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("data: ");
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < cursor.getColumnCount(); i++) {
-                builder.append(cursor.getColumnName(i));
-                if (i < cursor.getColumnCount() - 1) {
-                    builder.append(" | ");
-                }
-            }
-            builder.append("\n");
-            displayView.append(builder.toString());
-            builder.setLength(0);
-
-            while (cursor.moveToNext()) {
-                for (int i = 0; i < cursor.getColumnCount(); i++) {
-                    builder.append(cursor.getString(i));
-                    if (i < cursor.getColumnCount() - 1) {
-                        builder.append(" | ");
-                    }
-                }
-                builder.append("\n");
-            }
-            displayView.append(builder.toString());
-            builder.setLength(0);
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
-        }
+        mCursor = getContentResolver().query(PetEntry.CONTENT_URI, columns, null, null, null);
+        PetCursorAdapter adapter = new PetCursorAdapter(this, mCursor);
+        this.mListView.setAdapter(adapter);
     }
 
     private void insertPet() {
@@ -132,5 +106,13 @@ public class CatalogActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         displayDatabaseInfo();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mCursor != null){
+            mCursor.close();
+        }
     }
 }
