@@ -1,15 +1,23 @@
 <resources>
-    <string name="app_name">Lab1</string>
+    <string name="app_name">BMI counter</string>
 
     <!-- strings for views in main -->
     <string name="mass_textView">Mass:</string>
-    <string name="height_textView">Weight:</string>
+    <string name="height_textView">Height:</string>
     <string name="count_bmi_button">Count BMI</string>
     <string name="result_bmi_textView">BMI result:</string>
+
+    <string name="mass_stones_textView">st:</string>
+    <string name="mass_pounds_textView">lb:</string>
+    <string name="height_feet_textView">ft:</string>
+    <string name="height_inches_textView">in:</string>
 
     <!-- bmi results descriptions -->
     <string name="bmi_result_fatty">Too fat my friend...</string>
     <string name="bmi_result_skinny">Too skinny my friend...</string>
     <string name="bmi_result_alright">You are perfect!</string>
 
+    <!-- string for menu values -->
+    <string name="units_kg_m">metric</string>
+    <string name="units_lb_in">imperial</string>
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_item_kg_meters"
+          android:title="@string/units_kg_m" />
+    <item android:id="@+id/menu_item_lb_inches"
+          android:title="@string/units_lb_in"/>
+</menu>
