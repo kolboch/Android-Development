@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Lab1</string>
+
+    <!-- strings for views in main -->
+    <string name="mass_textView">Mass:</string>
+    <string name="height_textView">Weight:</string>
+    <string name="count_bmi_button">Count BMI</string>
+    <string name="result_bmi_textView">BMI result:</string>
+
+    <!-- bmi results descriptions -->
+    <string name="bmi_result_fatty">Too fat my friend...</string>
+    <string name="bmi_result_skinny">Too skinny my friend...</string>
+    <string name="bmi_result_alright">You are perfect!</string>
+
+</resources>
