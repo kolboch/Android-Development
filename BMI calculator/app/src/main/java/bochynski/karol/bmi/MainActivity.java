@@ -1,4 +1,4 @@
-package bochynski.karol.lab1;
+package bochynski.karol.bmi;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         countBmiBttn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                
             }
         });
     }

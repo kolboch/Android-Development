@@ -1,6 +1,9 @@
-package bochynski.karol.lab1;
+package bochynski.karol.bmi;
 
 import org.junit.Test;
+
+import bochynski.karol.bmi.exceptions.InvalidHeightException;
+import bochynski.karol.bmi.exceptions.InvalidMassException;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -9,7 +12,7 @@ import static junit.framework.Assert.assertFalse;
  * Created by Karol on 2017-03-15.
  */
 
-public class CountBMITest {
+public class CountBMIForKgMTest {
 
     @Test
     public void massUnderZeroIsInvalid() throws Exception {
@@ -28,16 +31,16 @@ public class CountBMITest {
         assertEquals(100 / (1.4f * 1.4f), result, 0.001f);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void countBMIInvalidHeightExceptionTest() throws Exception {
+    @Test(expected = InvalidHeightException.class)
+    public void countBMIInvalidHeightExceptionTest() {
         float mass = 100;
         float height = 3;
         ICountBMI counter = new CountBMIForKgM();
         float result = counter.countBMI(mass, height);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void countBMIInvalidMassExceptionTest() throws Exception {
+    @Test(expected = InvalidMassException.class)
+    public void countBMIInvalidMassExceptionTest() {
         float mass = 300;
         float height = 1.2f;
         ICountBMI counter = new CountBMIForKgM();

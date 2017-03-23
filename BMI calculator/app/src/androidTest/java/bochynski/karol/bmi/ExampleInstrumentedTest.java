@@ -1,4 +1,4 @@
-package bochynski.karol.lab1;
+package bochynski.karol.bmi;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

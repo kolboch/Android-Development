@@ -1,4 +1,4 @@
-package bochynski.karol.lab1;
+package bochynski.karol.bmi;
 
 /**
  * Created by Karol on 2017-03-15.

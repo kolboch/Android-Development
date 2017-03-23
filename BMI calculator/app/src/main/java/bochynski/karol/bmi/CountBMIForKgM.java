@@ -1,4 +1,7 @@
-package bochynski.karol.lab1;
+package bochynski.karol.bmi;
+
+import bochynski.karol.bmi.exceptions.InvalidHeightException;
+import bochynski.karol.bmi.exceptions.InvalidMassException;
 
 /**
  * Created by Karol on 2017-03-15.
@@ -24,9 +27,9 @@ public class CountBMIForKgM implements ICountBMI {
     @Override
     public float countBMI(float mass, float height) {
         if (!isMassValid(mass)) {
-            throw new IllegalArgumentException("Invalid mass value.");
+            throw new InvalidMassException("Invalid mass value.");
         } else if (!isHeightValid(height)) {
-            throw new IllegalArgumentException("Invalid height value.");
+            throw new InvalidHeightException("Invalid height value.");
         }
         return mass / (height * height);
     }
