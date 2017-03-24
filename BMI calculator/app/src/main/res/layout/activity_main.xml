@@ -14,80 +14,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="bochynski.karol.bmi.MainActivity">
 
-    <TextView
-        android:id="@+id/mass_label"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/data_input_frame"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif"
-        android:padding="16dp"
-        android:text="@string/mass_textView"/>
-
-    <EditText
-        android:id="@+id/mass_input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="16dp"
-        android:layout_toRightOf="@id/mass_label"
-        android:inputType="numberDecimal"
-        android:padding="16dp"/>
-
-    <TextView
-        android:id="@+id/height_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/mass_label"
-        android:layout_marginBottom="32dp"
-        android:fontFamily="sans-serif"
-        android:padding="16dp"
-        android:text="@string/height_textView"/>
-
-    <EditText
-        android:id="@+id/height_input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/mass_label"
-        android:layout_marginBottom="32dp"
-        android:layout_toRightOf="@id/height_label"
-        android:inputType="numberDecimal"
-        android:padding="16dp"/>
-
-    <!-- alternative views for imperial units mode -->
-    <TextView
-        android:id="@+id/stones_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif"
-        android:padding="16dp"
-        android:text="@string/mass_stones_textView"
-        android:visibility="gone"/>
-
-    <EditText
-        android:id="@+id/stones_input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_toRightOf="@id/stones_label"
-        android:inputType="numberDecimal"
-        android:padding="16dp"
-        android:visibility="gone"/>
-    <!-- end of alternative views for imperial units mode -->
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/count_bmi_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/height_label"
+        android:layout_below="@id/data_input_frame"
         android:fontFamily="sans-serif"
         android:padding="12dp"
         android:text="@string/count_bmi_button"

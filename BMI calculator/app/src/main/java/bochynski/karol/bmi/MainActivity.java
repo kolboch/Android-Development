@@ -1,6 +1,8 @@
 package bochynski.karol.bmi;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,55 +14,61 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import bochynski.karol.bmi.fragments.InputImperialFragment;
+import bochynski.karol.bmi.fragments.InputMetricFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button countBmiBttn;
 
-    private TextView massLabelMetric;
-    private TextView heightLabelMetric;
-    private EditText massInputMetric;
-    private EditText heightInputMetric;
-
     private TextView resultBMI;
     private TextView resultBMIdescription;
 
-    private EditText stonesInputImperial;
-    private TextView stonesLabelImperial;
-    private EditText poundsInputImperial;
-    private TextView poundsLabelImperial;
-
-    private EditText feetInputImperial;
-    private TextView feetLabelImperial;
-    private EditText inchesInputImperial;
-    private TextView inchesLabelImperial;
-
-    private CountBMIForKgM counterKgM;
+    private ICountBMI counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        assignMetricViews();
-
-        resultBMI = (TextView)findViewById(R.id.BMI_result);
-        resultBMIdescription = (TextView)findViewById(R.id.BMI_result_description);
-
-        counterKgM= new CountBMIForKgM();
-
+        resultBMI = (TextView) findViewById(R.id.BMI_result);
+        resultBMIdescription = (TextView) findViewById(R.id.BMI_result_description);
+        countBmiBttn = (Button)findViewById(R.id.count_bmi_button);
+        addFragmentIfNotPresent();
         setListeners();
     }
 
-    private void setListeners(){
-        countBmiBttn = (Button)findViewById(R.id.count_bmi_button);
+    private void addFragmentIfNotPresent() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.data_input_frame);
+        if (fragment == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.data_input_frame, new InputMetricFragment());
+            transaction.commit();
+        }
+    }
+
+    private void setListeners() {
         countBmiBttn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                float result = counterKgM.countBMI(Float.parseFloat(massInputMetric.getText().toString()),
-                        Float.parseFloat(heightInputMetric.getText().toString()));
-                showResultViews();
-                setResultsBMI(result);
-                Toast.makeText(getApplicationContext(), "countBMI", Toast.LENGTH_SHORT).show();
+                if(isFragmentMetric()){
+                    counter = new CountBMIForKgM();
+                    float result = counter.countBMI(
+                                    Float.parseFloat(((EditText)findViewById(R.id.mass_input)).getText().toString()),
+                                     Float.parseFloat(((EditText)findViewById(R.id.height_input)).getText().toString()));
+                    setResultsBMI(result);
+                    showResultViews();
+                }
+                else if(isFragmentImperial()){
+                    counter = new CountBMIForLbIn();
+                    float result = ((CountBMIForLbIn)counter).countBMI(
+                            Float.parseFloat(((EditText)findViewById(R.id.stones_input)).getText().toString()),
+                            Float.parseFloat(((EditText)findViewById(R.id.pounds_input)).getText().toString()),
+                            Float.parseFloat(((EditText)findViewById(R.id.feet_input)).getText().toString()),
+                            Float.parseFloat(((EditText)findViewById(R.id.inches_input)).getText().toString()));
+                    setResultsBMI(result);
+                    showResultViews();
+                }
             }
         });
     }
@@ -74,37 +82,55 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        FragmentTransaction transaction;
+        switch (item.getItemId()) {
             case R.id.menu_item_kg_meters:
-                Toast.makeText(this, "metric", Toast.LENGTH_SHORT).show();
+                if (!isFragmentMetric()) {
+                    Fragment metric = InputMetricFragment.newInstance();
+                    transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.data_input_frame, metric);
+                    transaction.commit();
+                    hideResultsViews();
+                    Toast.makeText(this, "metric", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.menu_item_lb_inches:
-                Toast.makeText(this, "imperial", Toast.LENGTH_SHORT).show();
+                if (!isFragmentImperial()) {
+                    Fragment imperial = InputImperialFragment.newInstance();
+                    transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.data_input_frame, imperial);
+                    transaction.commit();
+                    hideResultsViews();
+                    Toast.makeText(this, "imperial", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void assignMetricViews(){
-        massInputMetric = (EditText)findViewById(R.id.mass_input);
-        heightInputMetric = (EditText)findViewById(R.id.height_input);
-        massLabelMetric = (TextView)findViewById(R.id.mass_label);
-        heightLabelMetric = (TextView)findViewById(R.id.height_label);
+    private boolean isFragmentMetric(){
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.data_input_frame);
+        return fragment instanceof InputMetricFragment;
     }
 
-    private void showResultViews(){
+    private boolean isFragmentImperial(){
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.data_input_frame);
+        return fragment instanceof  InputImperialFragment;
+    }
+
+    private void showResultViews() {
         resultBMI.setVisibility(View.VISIBLE);
         resultBMIdescription.setVisibility(View.VISIBLE);
     }
 
-    private void hideResultsViews(){
+    private void hideResultsViews() {
         resultBMI.setVisibility(View.GONE);
         resultBMIdescription.setVisibility(View.GONE);
     }
 
-    private void setResultsBMI(float result){
+    private void setResultsBMI(float result) {
         resultBMI.setText("" + result);
-        //call Analyzer for description and color of result
+        //TODO call Analyzer for description and color of result
     }
 }
