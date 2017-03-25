@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
+import bochynski.karol.bmi.exceptions.InvalidHeightException;
+import bochynski.karol.bmi.exceptions.InvalidMassException;
 import bochynski.karol.bmi.fragments.InputImperialFragment;
 import bochynski.karol.bmi.fragments.InputMetricFragment;
 
@@ -54,23 +57,30 @@ public class MainActivity extends AppCompatActivity {
         countBmiBttn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isFragmentMetric()){
-                    counter = new CountBMIForKgM();
-                    float result = counter.countBMI(
-                                    Float.parseFloat(((EditText)findViewById(R.id.mass_input)).getText().toString()),
-                                     Float.parseFloat(((EditText)findViewById(R.id.height_input)).getText().toString()));
-                    setResultsBMI(result);
-                    showResultViews();
+                try {
+                    if (isFragmentMetric()) {
+                        counter = new CountBMIForKgM();
+                        float result = counter.countBMI(
+                                getNumberOrZero(((EditText) findViewById(R.id.mass_input)).getText().toString()),
+                                getNumberOrZero(((EditText) findViewById(R.id.height_input)).getText().toString()));
+                        setResultsBMI(result);
+                        showResultViews();
+                    } else if (isFragmentImperial()) {
+                        counter = new CountBMIForLbIn();
+                        float result = ((CountBMIForLbIn) counter).countBMI(
+                                getNumberOrZero(((EditText) findViewById(R.id.stones_input)).getText().toString()),
+                                getNumberOrZero(((EditText) findViewById(R.id.pounds_input)).getText().toString()),
+                                getNumberOrZero(((EditText) findViewById(R.id.feet_input)).getText().toString()),
+                                getNumberOrZero(((EditText) findViewById(R.id.inches_input)).getText().toString()));
+                        setResultsBMI(result);
+                        showResultViews();
+                    }
                 }
-                else if(isFragmentImperial()){
-                    counter = new CountBMIForLbIn();
-                    float result = ((CountBMIForLbIn)counter).countBMI(
-                            Float.parseFloat(((EditText)findViewById(R.id.stones_input)).getText().toString()),
-                            Float.parseFloat(((EditText)findViewById(R.id.pounds_input)).getText().toString()),
-                            Float.parseFloat(((EditText)findViewById(R.id.feet_input)).getText().toString()),
-                            Float.parseFloat(((EditText)findViewById(R.id.inches_input)).getText().toString()));
-                    setResultsBMI(result);
-                    showResultViews();
+                catch (InvalidHeightException e){
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_height_toast), Toast.LENGTH_SHORT).show();
+                }
+                catch (InvalidMassException e){
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_mass_toast), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -85,24 +95,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        FragmentTransaction transaction;
+
         switch (item.getItemId()) {
             case R.id.menu_item_kg_meters:
                 if (!isFragmentMetric()) {
-                    Fragment metric = InputMetricFragment.newInstance();
-                    transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.data_input_frame, metric);
-                    transaction.commit();
+                    replaceInputDataFrame(InputMetricFragment.newInstance());
                     hideResultsViews();
                     Toast.makeText(this, "metric", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.menu_item_lb_inches:
                 if (!isFragmentImperial()) {
-                    Fragment imperial = InputImperialFragment.newInstance();
-                    transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.data_input_frame, imperial);
-                    transaction.commit();
+                    replaceInputDataFrame(InputImperialFragment.newInstance());
                     hideResultsViews();
                     Toast.makeText(this, "imperial", Toast.LENGTH_SHORT).show();
                 }
@@ -110,6 +114,17 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private float getNumberOrZero(String numberString){
+        float number;
+        if(!TextUtils.isEmpty(numberString)){
+            number = Float.parseFloat(numberString);
+        }
+        else{
+            number = 0;
+        }
+        return number;
     }
 
     private boolean isFragmentMetric(){
@@ -144,5 +159,11 @@ public class MainActivity extends AppCompatActivity {
         DecimalFormat df = new DecimalFormat("#.##");
         String formatted = df.format(result);
         return formatted;
+    }
+
+    private void replaceInputDataFrame(Fragment fragment){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.data_input_frame, fragment);
+        transaction.commit();
     }
 }

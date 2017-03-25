@@ -26,4 +26,8 @@
     <!-- string for menu values -->
     <string name="units_kg_m">metric</string>
     <string name="units_lb_in">imperial</string>
+
+    <!-- toast exceptions info -->
+    <string name="invalid_height_toast">Height out of range!</string>
+    <string name="invalid_mass_toast">Mass out of range!</string>
 </resources>
