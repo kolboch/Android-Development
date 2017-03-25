@@ -13,9 +13,11 @@
     <string name="height_inches_textView">in:</string>
 
     <!-- bmi results descriptions -->
-    <string name="bmi_result_fatty">Too fat my friend...</string>
-    <string name="bmi_result_skinny">Too skinny my friend...</string>
-    <string name="bmi_result_alright">You are perfect!</string>
+    <string name="bmi_result_underweight">Underweight. Eat more!</string>
+    <string name="bmi_result_healthy">Healthy! :D</string>
+    <string name="bmi_result_overweight">Overweight. Eat less!</string>
+    <string name="bmi_result_severely_obese">Obese.</string>
+    <string name="bmi_result_morbidly_obese">Clinically obese.</string>
 
     <!-- string for menu values -->
     <string name="units_kg_m">metric</string>

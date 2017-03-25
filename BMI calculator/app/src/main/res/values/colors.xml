@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#FFA000</color>
+    <color name="colorAccent">#0277BD</color>
+
+    <!-- bmi results colors -->
+    <color name="bmi_result_underweight">#18FFFF</color>
+    <color name="bmi_result_healthy">#76FF03</color>
+    <color name="bmi_result_overweight">#FFCA28</color>
+    <color name="bmi_result_obese">#F44336</color>
+    <color name="bmi_result_severely_obese">#E91E63</color>
+    <color name="bmi_result_morbidly_obese">#212121</color>
+
 </resources>

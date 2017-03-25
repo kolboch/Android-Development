@@ -3,6 +3,7 @@ package bochynski.karol.bmi;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -131,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setResultsBMI(float result) {
         resultBMI.setText("" + result);
-        //TODO call Analyzer for description and color of result
+        int BMIdescription = AnalyzerBMI.getDescriptionResource(result);
+        int color = AnalyzerBMI.getColorResourceForResult(result);
+        resultBMI.setTextColor(ContextCompat.getColor(this, color));
+        resultBMIdescription.setText(BMIdescription);
     }
 }
