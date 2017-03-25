@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BMI counter</string>
 
-    <!-- strings for views in main -->
+    <!-- strings for views -->
     <string name="mass_textView">Mass:</string>
     <string name="height_textView">Height:</string>
     <string name="count_bmi_button">Count BMI</string>
@@ -11,6 +11,10 @@
     <string name="mass_pounds_textView">lb:</string>
     <string name="height_feet_textView">ft:</string>
     <string name="height_inches_textView">in:</string>
+
+    <!-- strings for EditText's hints -->
+    <string name="hint_unit_kg">kilograms [kg]</string>
+    <string name="hint_unit_m">meters [m]</string>
 
     <!-- bmi results descriptions -->
     <string name="bmi_result_underweight">Underweight. Eat more!</string>

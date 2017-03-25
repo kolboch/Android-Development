@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/mass_label"
         android:layout_width="wrap_content"
@@ -21,6 +22,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="16dp"
         android:layout_toRightOf="@id/mass_label"
+        android:hint="@string/hint_unit_kg"
         android:inputType="numberDecimal"
         android:padding="16dp"/>
 
@@ -42,6 +44,7 @@
         android:layout_below="@id/mass_label"
         android:layout_marginBottom="32dp"
         android:layout_toRightOf="@id/height_label"
+        android:hint="@string/hint_unit_m"
         android:inputType="numberDecimal"
         android:padding="16dp"/>
 </RelativeLayout>

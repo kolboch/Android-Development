@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 import bochynski.karol.bmi.fragments.InputImperialFragment;
 import bochynski.karol.bmi.fragments.InputMetricFragment;
 
@@ -131,10 +133,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setResultsBMI(float result) {
-        resultBMI.setText("" + result);
+        resultBMI.setText(formatResult(result));
         int BMIdescription = AnalyzerBMI.getDescriptionResource(result);
         int color = AnalyzerBMI.getColorResourceForResult(result);
         resultBMI.setTextColor(ContextCompat.getColor(this, color));
         resultBMIdescription.setText(BMIdescription);
+    }
+
+    private String formatResult(float result){
+        DecimalFormat df = new DecimalFormat("#.##");
+        String formatted = df.format(result);
+        return formatted;
     }
 }
