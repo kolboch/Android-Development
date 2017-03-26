@@ -51,7 +51,7 @@
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:padding="12dp"
-        android:textSize="16sp"
+        android:textSize="22sp"
         android:visibility="gone"
         tools:text="res description"/>
 </RelativeLayout>

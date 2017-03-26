@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                                 getNumberOrZero(((EditText) findViewById(R.id.inches_input)).getText().toString()));
                         setResultsBMI(result);
                         showResultViews();
+
                     }
                 }
                 catch (InvalidHeightException e){
