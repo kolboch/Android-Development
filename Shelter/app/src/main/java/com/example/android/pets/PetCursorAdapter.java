@@ -3,6 +3,7 @@ package com.example.android.pets;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,10 @@ public class PetCursorAdapter extends CursorAdapter {
 
         TextView petBreed = (TextView)view.findViewById(R.id.pet_item_breed);
         String breed = cursor.getString(cursor.getColumnIndexOrThrow(PetEntry.COLUMN_PET_BREED));
-        petBreed.setText(breed);
+        if(TextUtils.isEmpty(breed)){
+            petBreed.setText(R.string.unknown_breed);
+        }else{
+            petBreed.setText(breed);
+        }
     }
 }
