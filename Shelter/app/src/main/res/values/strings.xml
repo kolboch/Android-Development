@@ -70,6 +70,7 @@
 
     <!-- toast message for updating data -->
     <string name="toast_update_success">Data successfully updated!</string>
+    <string name="toast_update_failure">No data affected by update.</string>
 
     <!-- toast for informing user that providing name is a must in EditorActivity form -->
     <string name="toast_must_provide_name">Must insert name before saving!</string>
@@ -85,4 +86,26 @@
     <!-- layout test strings -->
     <string name="test_item_pet_name">Bingo berderolo</string>
     <string name="test_item_pet_breed">German Sheeperd</string>
+
+    <!-- alert strings for unsaved changes -->
+    <string name="unsaved_changes_message">Unsaved changes!</string>
+    <string name="save_changes_before_deleting">Save before deletion!</string>
+    <string name="discard_changes">Discard.</string>
+    <string name="keep_editing">Keep editing.</string>
+
+    <!-- Toast message in editor when current pet was successfully deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_pet_successful">Pet deleted successfully!</string>
+
+    <!-- Toast message in editor when current pet has failed to be deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_pet_failed">Error when deleting.</string>
+
+    <!-- Dialog message to ask the user to confirm deleting the current pet [CHAR LIMIT=NONE] -->
+    <string name="delete_dialog_message">Really want to delete?</string>
+
+    <!-- Dialog button text for the option to confirm deleting the current pet [CHAR LIMIT=20] -->
+    <string name="delete">Delete</string>
+
+    <!-- Dialog button text for the option to cancel deletion of the current pet [CHAR LIMIT=20] -->
+    <string name="cancel">Cancel</string>
+
 </resources>

@@ -33,6 +33,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetEntry;
 
@@ -96,7 +97,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
-                // Do nothing for now
+                deletePets();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -104,14 +105,21 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     private void insertPet() {
         ContentValues values = new ContentValues();
-        values.put(PetEntry.COLUMN_PET_NAME, "Garfield");
-        values.put(PetEntry.COLUMN_PET_BREED, "German shepperd");
+        values.put(PetEntry.COLUMN_PET_NAME, "Bernardo");
+        values.put(PetEntry.COLUMN_PET_BREED, "Black duster");
         values.put(PetEntry.COLUMN_PET_GENDER, 1);
         values.put(PetEntry.COLUMN_PET_WEIGHT, 19);
         Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
         long newRowId = ContentUris.parseId(newUri);
         if (newRowId == -1) {
             Log.e(LOG_TAG_CATALOG, getString(R.string.toast_record_save_fail));
+        }
+    }
+
+    private void deletePets(){
+        int rowsAffected  = getContentResolver().delete(PetEntry.CONTENT_URI, null, null);
+        if(rowsAffected > 0){
+            Toast.makeText(this, "Rows affected: " + rowsAffected, Toast.LENGTH_SHORT).show();
         }
     }
 
