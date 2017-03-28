@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import bochynski.karol.bmi.R;
 
@@ -15,12 +14,6 @@ import bochynski.karol.bmi.R;
  */
 
 public class InputImperialFragment extends Fragment {
-
-    private EditText stonesInputImperial;
-    private EditText poundsInputImperial;
-    private EditText feetInputImperial;
-    private EditText inchesInputImperial;
-
 
     public static InputImperialFragment newInstance(){
         return new InputImperialFragment();

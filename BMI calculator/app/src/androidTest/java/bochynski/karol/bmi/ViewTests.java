@@ -1,5 +1,6 @@
 package bochynski.karol.bmi;
 
+import android.support.test.espresso.matcher.ViewMatchers.Visibility;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
@@ -14,6 +15,7 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
@@ -72,10 +74,11 @@ public class ViewTests {
                 .perform(typeText("2"), closeSoftKeyboard());
         onView(withId(R.id.count_bmi_button)).perform(click());
 
-        onView(withId(R.id.BMI_result)).check(matches(isDisplayed()));
+        // not isDisplayed to pass small devices where u have to scroll to see that view
+        onView(withId(R.id.BMI_result)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
         onView(withId(R.id.BMI_result)).check(matches(withText("15"))); // BMI equation: mass / (height^2) [for metric which is initial setup]
 
-        onView(withId(R.id.BMI_result_description)).check(matches(isDisplayed()));
+        onView(withId(R.id.BMI_result_description)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
         onView(withId(R.id.BMI_result_description)).check(matches(withText(R.string.bmi_result_underweight)));
     }
 

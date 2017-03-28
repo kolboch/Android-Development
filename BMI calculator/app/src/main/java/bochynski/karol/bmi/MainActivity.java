@@ -22,24 +22,21 @@ import bochynski.karol.bmi.exceptions.InvalidHeightException;
 import bochynski.karol.bmi.exceptions.InvalidMassException;
 import bochynski.karol.bmi.fragments.InputImperialFragment;
 import bochynski.karol.bmi.fragments.InputMetricFragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button countBmiBttn;
-
-    private TextView resultBMI;
-    private TextView resultBMIdescription;
-
+    @BindView(R.id.BMI_result) TextView resultBMI;
+    @BindView(R.id.BMI_result_description) TextView resultBMIdescription;
+    @BindView(R.id.count_bmi_button) Button countBmiBttn;
     private ICountBMI counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        resultBMI = (TextView) findViewById(R.id.BMI_result);
-        resultBMIdescription = (TextView) findViewById(R.id.BMI_result_description);
-        countBmiBttn = (Button)findViewById(R.id.count_bmi_button);
+        ButterKnife.bind(this);
         addFragmentIfNotPresent();
         setListeners();
     }
