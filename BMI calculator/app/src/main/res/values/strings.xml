@@ -24,8 +24,11 @@
     <string name="bmi_result_morbidly_obese">Clinically obese.</string>
 
     <!-- string for menu values -->
-    <string name="units_kg_m">metric</string>
-    <string name="units_lb_in">imperial</string>
+    <string name="menu_units_kg_m">Metric</string>
+    <string name="menu_units_lb_in">Imperial</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_about_author">About author</string>
 
     <!-- toast exceptions info -->
     <string name="invalid_height_toast">Height out of range!</string>

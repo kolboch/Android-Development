@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_item_kg_meters"
-          android:title="@string/units_kg_m" />
-    <item android:id="@+id/menu_item_lb_inches"
-          android:title="@string/units_lb_in"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_item_kg_meters"
+        android:title="@string/menu_units_kg_m"/>
+
+    <item
+        android:id="@+id/menu_item_lb_inches"
+        android:title="@string/menu_units_lb_in"/>
+
+    <item
+        android:id="@+id/menu_item_save"
+        android:icon="@mipmap/ic_save"
+        android:title="@string/menu_save"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_item_share"
+        android:icon="@mipmap/ic_share"
+        android:title="@string/menu_share"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_item_about_author"
+        android:title="@string/menu_about_author"/>
+
 </menu>

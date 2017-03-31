@@ -40,7 +40,7 @@ public class ViewTests {
     @Test
     public void changeFromMetricToImperial(){
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext()); //opening options/ overflow menu
-        onView(withText(R.string.units_lb_in)).perform(click());
+        onView(withText(R.string.menu_units_lb_in)).perform(click());
         onView(withId(R.id.mass_input)).check(doesNotExist());
         onView(withId(R.id.height_input)).check(doesNotExist());
 
@@ -59,9 +59,9 @@ public class ViewTests {
     @Test
     public void checkFromImperialToMetric(){
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-        onView(withText(R.string.units_lb_in)).perform(click());
+        onView(withText(R.string.menu_units_lb_in)).perform(click());
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-        onView(withText(R.string.units_kg_m)).perform(click());
+        onView(withText(R.string.menu_units_kg_m)).perform(click());
         onView(withId(R.id.mass_input)).check(matches(isDisplayed()));
         onView(withId(R.id.height_input)).check(matches(isDisplayed()));
     }
