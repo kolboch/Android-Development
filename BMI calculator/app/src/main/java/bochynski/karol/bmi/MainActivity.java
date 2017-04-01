@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-
+    //TODO when back call from menu bar state is not recreated ;/
     @BindView(R.id.BMI_result)
     TextView resultBMI;
     @BindView(R.id.BMI_result_description)
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        retrieveSavedBmiResult(savedInstanceState);
+        // retrieveSavedBmiResult(savedInstanceState);
         addFragmentIfNotPresent();
         setListeners();
     }
@@ -54,25 +54,6 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.data_input_frame, new InputMetricFragment());
             transaction.commit();
-        }
-    }
-
-    private void retrieveSavedBmiResult(Bundle savedInstanceState) {
-        if (savedInstanceState != null) { // previous bmi result and description to handle
-            showResultViews();
-            if (savedInstanceState.containsKey(BMI_RESULT_SAVED)) {
-                CharSequence savedBmiResult = savedInstanceState.getCharSequence(BMI_RESULT_SAVED);
-                if (resultBMI != null) {
-                    resultBMI.setText(savedBmiResult);
-                    setResultBMIColor((String) savedBmiResult);
-                }
-            }
-            if (savedInstanceState.containsKey(BMI_RESULT_DESCRIPTION_SAVED)) {
-                CharSequence savedBmiDescription = savedInstanceState.getCharSequence(BMI_RESULT_DESCRIPTION_SAVED);
-                if (resultBMIdescription != null) {
-                    resultBMIdescription.setText(savedBmiDescription);
-                }
-            }
         }
     }
 
@@ -194,13 +175,17 @@ public class MainActivity extends AppCompatActivity {
     private void setResultsBMI(float result) {
         resultBMI.setText(formatResult(result));
         int BMIdescription = AnalyzerBMI.getDescriptionResource(result);
-        int color = AnalyzerBMI.getColorResourceForResult(result);
-        resultBMI.setTextColor(ContextCompat.getColor(this, color));
+        setResultBMIColor(result);
         resultBMIdescription.setText(BMIdescription);
     }
 
-    private void setResultBMIColor(String savedResult) {
-        float result = Float.parseFloat(savedResult);
+    private void setResultBMIColor(String resultString) {
+        resultString = resultString.replace(',','.');
+        float result = Float.parseFloat(resultString);
+        setResultBMIColor(result);
+    }
+
+    private void setResultBMIColor(float result){
         int color = AnalyzerBMI.getColorResourceForResult(result);
         resultBMI.setTextColor(ContextCompat.getColor(this, color));
     }
@@ -215,5 +200,26 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.data_input_frame, fragment);
         transaction.commit();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        showResultViews();
+        if (savedInstanceState.containsKey(BMI_RESULT_SAVED)) {
+            CharSequence savedBmiResult = savedInstanceState.getCharSequence(BMI_RESULT_SAVED);
+            if (resultBMI != null) {
+                resultBMI.setText(savedBmiResult);
+                setResultBMIColor((String) savedBmiResult);
+            }
+        }
+        if (savedInstanceState.containsKey(BMI_RESULT_DESCRIPTION_SAVED)) {
+            CharSequence savedBmiDescription = savedInstanceState.getCharSequence(BMI_RESULT_DESCRIPTION_SAVED);
+            if (resultBMIdescription != null) {
+                resultBMIdescription.setText(savedBmiDescription);
+            }
+        }
+
     }
 }
