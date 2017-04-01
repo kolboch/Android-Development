@@ -1,5 +1,6 @@
 package bochynski.karol.bmi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -152,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.menu_save, Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.menu_item_about_author:
-                //TODO proceed to about author activity
+                Intent i = new Intent(this, AuthorInfoActivity.class);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
