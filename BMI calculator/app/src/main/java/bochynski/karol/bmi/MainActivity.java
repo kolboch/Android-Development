@@ -1,6 +1,9 @@
 package bochynski.karol.bmi;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,23 +20,25 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.DecimalFormat;
 
 import bochynski.karol.bmi.exceptions.InvalidHeightException;
 import bochynski.karol.bmi.exceptions.InvalidMassException;
 import bochynski.karol.bmi.fragments.InputImperialFragment;
 import bochynski.karol.bmi.fragments.InputMetricFragment;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    //TODO when back call from menu bar state is not recreated ;/
-    @BindView(R.id.BMI_result)
-    TextView resultBMI;
-    @BindView(R.id.BMI_result_description)
-    TextView resultBMIdescription;
-    @BindView(R.id.count_bmi_button)
-    Button countBmiBttn;
+    //TODO hide show save/share when no result yet
+    //TODO remove useless intents
+    @BindView(R.id.BMI_result) TextView resultBMI;
+    @BindView(R.id.BMI_result_description) TextView resultBMIdescription;
+    @BindView(R.id.count_bmi_button) Button countBmiBttn;
+    @BindString(R.string.dir_screenshots_folder) String screenshotsDirFolder;
+    @BindString(R.string.screenshot_file_default_name) String fileDefaultName;
     private ICountBMI counter;
     private String BMI_RESULT_SAVED = "BMI_RESULT";
     private String BMI_RESULT_DESCRIPTION_SAVED = "BMI_RESULT_DESCRIPTION";
@@ -43,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        // retrieveSavedBmiResult(savedInstanceState);
         addFragmentIfNotPresent();
         setListeners();
     }
@@ -115,23 +119,25 @@ public class MainActivity extends AppCompatActivity {
                 if (!isFragmentMetric()) {
                     replaceInputDataFrame(InputMetricFragment.newInstance());
                     hideResultsViews();
-                    Toast.makeText(this, R.string.menu_units_kg_m, Toast.LENGTH_SHORT).show();
+                    makeShortToast(R.string.menu_units_kg_m);
                 }
                 return true;
             case R.id.menu_item_lb_inches:
                 if (!isFragmentImperial()) {
                     replaceInputDataFrame(InputImperialFragment.newInstance());
                     hideResultsViews();
-                    Toast.makeText(this, R.string.menu_units_lb_in, Toast.LENGTH_SHORT).show();
+                    makeShortToast(R.string.menu_units_lb_in);
                 }
                 return true;
             case R.id.menu_item_share:
                 //TODO handle sharing BMI result
-                Toast.makeText(this, R.string.menu_share, Toast.LENGTH_SHORT).show();
+                makeShortToast(R.string.menu_share);
                 return true;
             case R.id.menu_item_save:
                 //TODO handle saving screenshot or data to memory
-                Toast.makeText(this, R.string.menu_save, Toast.LENGTH_SHORT).show();
+                //TODO just result or image question
+                takeScreenShotAndSave();
+                makeShortToast(R.string.menu_save);
                 return true;
             case R.id.menu_item_about_author:
                 Intent i = new Intent(this, AuthorInfoActivity.class);
@@ -180,12 +186,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setResultBMIColor(String resultString) {
-        resultString = resultString.replace(',','.');
+        resultString = resultString.replace(',', '.');
         float result = Float.parseFloat(resultString);
         setResultBMIColor(result);
     }
 
-    private void setResultBMIColor(float result){
+    private void setResultBMIColor(float result) {
         int color = AnalyzerBMI.getColorResourceForResult(result);
         resultBMI.setTextColor(ContextCompat.getColor(this, color));
     }
@@ -220,6 +226,29 @@ public class MainActivity extends AppCompatActivity {
                 resultBMIdescription.setText(savedBmiDescription);
             }
         }
+    }
 
+    private void makeShortToast(int messageResource){
+        Toast.makeText(this, messageResource, Toast.LENGTH_SHORT).show();
+    }
+
+    private void takeScreenShotAndSave(){
+        Bitmap bm = ImageShareUtils.getScreenshot(findViewById(R.id.activity_main));
+        File saved = ImageShareUtils.storeBitmapToFile(bm, screenshotsDirFolder, fileDefaultName + ImageShareUtils.generateFileName());
+        Toast.makeText(this, "Saved under: " + saved.getPath(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void shareFile(File f){
+        Uri uri = Uri.fromFile(f);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/*"); // everything that handles images ( of any extension )
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        try {
+            startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_apps_chooser_title)));
+        }
+        catch (ActivityNotFoundException e){
+            makeShortToast(R.string.exception_no_app_to_handle_share);
+        }
     }
 }

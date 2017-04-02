@@ -33,7 +33,16 @@
     <!-- toast exceptions info -->
     <string name="invalid_height_toast">Height out of range!</string>
     <string name="invalid_mass_toast">Mass out of range!</string>
+    <string name="exception_failed_to_save_screenshot">Failed to save screenshot.</string>
+    <string name="exception_no_app_to_handle_share">No apps found.</string>
 
     <!-- about author layout -->
     <string name="author_invitational">Hi! I\'m Karol.</string>
+
+    <!-- imaging saving/ sharing handling strings -->
+    <string name="dir_screenshots_folder">BMI_shots</string>
+    <string name="screenshot_file_default_name">BMI_</string>
+    <string name="successful_save_screenshot">Saved with success!</string>
+    <string name="share_apps_chooser_title">Share screenshot</string>
+
 </resources>
