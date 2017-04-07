@@ -39,10 +39,25 @@
     <!-- about author layout -->
     <string name="author_invitational">Hi! I\'m Karol.</string>
 
-    <!-- imaging saving/ sharing handling strings -->
+    <!-- image saving/ sharing handling strings -->
     <string name="dir_screenshots_folder">BMI_shots</string>
     <string name="screenshot_file_default_name">BMI_</string>
     <string name="successful_save_screenshot">Saved with success!</string>
     <string name="share_apps_chooser_title">Share screenshot</string>
+    <string name="saved_toast">Saved under:</string>
+    <string name="share_BMI_result_text_title">My BMI result:</string>
+    <string name="share_using">Share with:</string>
+    <string name="no_result_available">No result available.</string>
+    <string name="share_alert_dialog_title">Share</string>
+    <string name="share_alert_dialog_image">Share</string>
+    <string name="share_alert_dialog_just_result">Share</string>
+
+    <!-- saving result to shared preferences -->
+    <string name="saved_BMI_results">Results saved.</string>
+    <string name="save_alert_dialog_title">Save</string>
+    <string name="save_alert_dialog_image">Save screenshot</string>
+    <string name="save_alert_dialog_last_result">Last result</string>
+
+    <string name="alert_dialog_cancel">Cancel</string>
 
 </resources>
