@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
     @BindString(R.string.share_using)
     String shareWith;
     private ICountBMI counter;
-    private String BMI_RESULT_SAVED = "BMI_RESULT";
-    private String BMI_RESULT_DESCRIPTION_SAVED = "BMI_RESULT_DESCRIPTION";
-    private static final String PREFERENCES_NAME = "BMI_preferences";
+    public static final String BMI_RESULT_SAVED = "BMI_RESULT";
+    public static final String BMI_RESULT_DESCRIPTION_SAVED = "BMI_RESULT_DESCRIPTION";
+    public static final String PREFERENCES_NAME = "BMI_preferences";
     private static final String MAIN_LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override

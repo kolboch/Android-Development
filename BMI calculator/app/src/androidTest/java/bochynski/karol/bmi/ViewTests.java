@@ -1,8 +1,13 @@
 package bochynski.karol.bmi;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences.Editor;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.ViewMatchers.Visibility;
 import android.support.test.rule.ActivityTestRule;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -25,12 +30,24 @@ import static org.hamcrest.Matchers.not;
  */
 
 public class ViewTests {
+    private Editor preferencesEditor;
+    private Intent intent;
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule =
-            new ActivityTestRule<>(MainActivity.class);
+            new ActivityTestRule<>(MainActivity.class, true, false); // false to not run immediately activity
+
+    @Before
+    public void setUp() {
+        intent = new Intent();
+        Context context = getInstrumentation().getTargetContext();
+        preferencesEditor = context.getSharedPreferences(MainActivity.PREFERENCES_NAME, Context.MODE_PRIVATE).edit();
+    }
 
     @Test
-    public void checkMetricInputViews(){
+    public void checkMetricInputViews() {
+        clearPreferencesAndLaunch();
+
         onView(withId(R.id.mass_input))
                 .perform(typeText("60"), closeSoftKeyboard());
         onView(withId(R.id.height_input))
@@ -38,7 +55,9 @@ public class ViewTests {
     }
 
     @Test
-    public void changeFromMetricToImperial(){
+    public void changeFromMetricToImperial() {
+        clearPreferencesAndLaunch();
+
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext()); //opening options/ overflow menu
         onView(withText(R.string.menu_units_lb_in)).perform(click());
         onView(withId(R.id.mass_input)).check(doesNotExist());
@@ -55,9 +74,10 @@ public class ViewTests {
     }
 
 
-
     @Test
-    public void checkFromImperialToMetric(){
+    public void checkFromImperialToMetric() {
+        clearPreferencesAndLaunch();
+
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText(R.string.menu_units_lb_in)).perform(click());
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
@@ -67,7 +87,9 @@ public class ViewTests {
     }
 
     @Test
-    public void checkShowingBMIResultOnButtonClick(){
+    public void checkShowingBMIResultOnButtonClick() {
+        clearPreferencesAndLaunch();
+
         onView(withId(R.id.mass_input))
                 .perform(typeText("60"), closeSoftKeyboard());
         onView(withId(R.id.height_input))
@@ -83,7 +105,9 @@ public class ViewTests {
     }
 
     @Test
-    public void checkNotShowingResultViewsOnInvalidDataInput(){
+    public void checkNotShowingResultViewsOnInvalidDataInput() {
+        clearPreferencesAndLaunch();
+
         onView(withId(R.id.mass_input))
                 .perform(typeText("500"), closeSoftKeyboard());
         onView(withId(R.id.height_input))
@@ -92,5 +116,30 @@ public class ViewTests {
 
         onView(withId(R.id.BMI_result)).check(matches(not(isDisplayed())));
         onView(withId(R.id.BMI_result_description)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void checkShowingResultViewsFromSharedPreferences() {
+        preferencesEditor.putString(MainActivity.BMI_RESULT_SAVED, "24.5");
+        preferencesEditor.putString(MainActivity.BMI_RESULT_DESCRIPTION_SAVED, getResourceString(R.string.bmi_result_healthy));
+        preferencesEditor.commit();
+        mActivityRule.launchActivity(intent);
+
+        onView(withId(R.id.BMI_result)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+        onView(withId(R.id.BMI_result)).check(matches(withText("24.5")));
+
+        onView(withId(R.id.BMI_result_description)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+        onView(withId(R.id.BMI_result_description)).check(matches(withText(R.string.bmi_result_healthy)));
+    }
+
+    private String getResourceString(int id) {
+        Context targetContext = InstrumentationRegistry.getTargetContext();
+        return targetContext.getResources().getString(id);
+    }
+
+    private void clearPreferencesAndLaunch() {
+        preferencesEditor.clear();
+        preferencesEditor.commit();
+        mActivityRule.launchActivity(intent);
     }
 }
