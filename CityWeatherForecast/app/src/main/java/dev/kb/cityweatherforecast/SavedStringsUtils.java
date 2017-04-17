@@ -3,6 +3,7 @@ package dev.kb.cityweatherforecast;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.text.TextUtils;
 
 /**
  * Created by Karol on 2017-04-14.
@@ -99,7 +100,11 @@ public abstract class SavedStringsUtils {
      * converts given string to array of strings based on given split string
      */
     private static String[] convertStringToArray(String toConvert, String splitString) {
-        String[] items = toConvert.split(splitString);
+        String[]items = null;
+        if(toConvert != null && !TextUtils.isEmpty(toConvert)) {
+            toConvert = capitalizeString(toConvert, splitString);
+            items = toConvert.split(splitString);
+        }
         return items;
     }
 
@@ -129,5 +134,20 @@ public abstract class SavedStringsUtils {
             }
         }
         return false;
+    }
+
+    public static String capitalizeString(String string, String splitString) {
+        char[] chars = string.toCharArray();
+        boolean splitOneChar = splitString.length() == 1 ? true : false;
+        boolean found = false;
+        for (int i = 0; i < chars.length; i++) {
+            if (!found && Character.isLetter(chars[i])) {
+                chars[i] = Character.toUpperCase(chars[i]);
+                found = true;
+            } else if (Character.isWhitespace(chars[i]) || (splitOneChar && splitString.charAt(0) == chars[i])) {
+                found = false;
+            }
+        }
+        return String.valueOf(chars);
     }
 }

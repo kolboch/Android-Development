@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WeatherForecastMain extends AppCompatActivity implements LoaderCallbacks<List<DayForecast>> {
-
+    //TODO change settings icon
+    //TODO look and style to material design
+    //TODO change graphics
     private static final String LOG_TAG = WeatherForecastMain.class.getName();
     private ArrayList<DayForecast> forecasts;
     private ExpandableListView forecastsExpandableListView;

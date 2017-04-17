@@ -50,6 +50,7 @@
     <string name="settings_city_label">City</string>
     <string name="settings_city_key">q</string>
     <string name="settings_city_default">London</string>
+    <string name="label_last_used_cities">Last used:</string>
 
     <!-- toast messages -->
     <string name="toast_data_refresh">Data refreshed.</string>
