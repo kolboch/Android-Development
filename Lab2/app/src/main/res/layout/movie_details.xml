@@ -20,17 +20,19 @@
         />
 
     <TextView
-        android:id="@+id/details_movie_title"
+        android:id="@+id/details_movie_ratingBar_label"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="8dp"
-        android:text="TextView"
+        android:gravity="center"
+        android:text="@string/movie_details_rating_label"
         android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/details_movie_ratingBar"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@+id/details_movie_ratingBar_label"
+        app:layout_constraintLeft_toLeftOf="@+id/details_movie_title"
         app:layout_constraintRight_toLeftOf="@+id/details_movie_ratingBar"
         />
 
@@ -41,16 +43,17 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_movie_ratingBar_label"
+        app:layout_constraintTop_toBottomOf="@+id/details_movie_title"
         />
 
     <TextView
-        android:id="@+id/details_movie_ratingBar_label"
+        android:id="@+id/details_movie_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
         android:textSize="30sp"
@@ -67,6 +70,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
