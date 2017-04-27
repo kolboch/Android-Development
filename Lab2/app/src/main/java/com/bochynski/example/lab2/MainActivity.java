@@ -29,11 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private float x1,x2;
     static final int MIN_DISTANCE = 150;
 
-    public static final String MOVIE_DETAILS_BUNDLE_KEY = "movie_details_key";
-    public static final String MOVIE_TITLE_KEY = "movie_title_key";
-    public static final String MOVIE_GENRE_KEY = "movie_genre_key";
-    public static final String MOVIE_YEAR_KEY = "movie_year_key";
-    public static final String MOVIE_DESCRIPTION_KEY = "movie_description_key";
+    public static final String PARCEL_MOVIE_KEY = "parcel_movie_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +47,6 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
         mTouchHelper = new ItemTouchHelper(callback);
         mTouchHelper.attachToRecyclerView(this.recyclerView);
-    }
-
-    private Bundle createBundleWithMovieData(Movie movie){
-        Bundle movieDetails = new Bundle();
-        movieDetails.putString(MOVIE_TITLE_KEY, movie.getTitle());
-        movieDetails.putString(MOVIE_YEAR_KEY, movie.getYear());
-        movieDetails.putString(MOVIE_GENRE_KEY, movie.getGenre());
-        movieDetails.putString(MOVIE_DESCRIPTION_KEY, movie.getDescription());
-        return movieDetails;
     }
 
     private void setRecyclerView(){
@@ -81,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 Intent i = new Intent(MainActivity.this, MovieDetailsActivity.class);
                 Movie movie = movieList.get(position);
-                Bundle movieDetails = createBundleWithMovieData(movie);
-                i.putExtra(MOVIE_DETAILS_BUNDLE_KEY, movieDetails);
+                i.putExtra(PARCEL_MOVIE_KEY, movie);
                 startActivity(i);
             }
 
