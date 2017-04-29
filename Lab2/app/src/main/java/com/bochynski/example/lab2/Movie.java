@@ -19,11 +19,15 @@ public class Movie implements Parcelable {
     }
 
     public Movie(String title, String genre, String year, boolean seen) {
+        this(title, genre, year, seen, MAX_RATING_SCORE);
+    }
+
+    public Movie(String title, String genre, String year, boolean seen, float rating){
         this.title = title;
         this.genre = genre;
         this.year = year;
         this.seenByUser = seen;
-        this.rating = MAX_RATING_SCORE;
+        setRating(rating);
     }
 
     public float getRating() {

@@ -30,6 +30,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @BindString(R.string.default_movie_description)String defaultDescription;
 
     private Movie currentMovie;
+    private int movieIndex;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private void setViewsDetails(){
         Intent i = getIntent();
         this.currentMovie = i.getParcelableExtra(MainActivity.PARCEL_MOVIE_KEY);
+        this.movieIndex = i.getIntExtra(MainActivity.EXTRA_MOVIE_POSITION_KEY, -1);
         titleView.setText(currentMovie.getTitle());
         descriptionView.setText(currentMovie.getDescription());
         this.ratingBar.setRating(currentMovie.getRating());
@@ -55,6 +57,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
                 ratingBar.setRating(rating);
                 MovieDetailsActivity.this.currentMovie.setRating(rating);
+                MainActivity.modifyMovieRating(movieIndex, rating);
             }
         });
     }

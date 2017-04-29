@@ -20,16 +20,18 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindString(R.string.seen_symbol)String seenSign;
+    @BindString(R.string.seen_symbol)
+    String seenSign;
 
-    private List<Movie> movieList = new ArrayList<>();
+    private static List<Movie> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MoviesAdapter mAdapter;
     private ItemTouchHelper mTouchHelper;
-    private float x1,x2;
+    private float x1, x2;
     static final int MIN_DISTANCE = 150;
 
     public static final String PARCEL_MOVIE_KEY = "parcel_movie_key";
+    public static final String EXTRA_MOVIE_POSITION_KEY = "extra_position_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
         prepareMovieData();
     }
 
-    private void setItemTouchHelperForRecycler(){
+    private void setItemTouchHelperForRecycler() {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
         mTouchHelper = new ItemTouchHelper(callback);
         mTouchHelper.attachToRecyclerView(this.recyclerView);
     }
 
-    private void setRecyclerView(){
+    private void setRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mAdapter = new MoviesAdapter(movieList);
 
@@ -62,13 +64,14 @@ public class MainActivity extends AppCompatActivity {
         setRecyclerViewListeners();
     }
 
-    private void setRecyclerViewListeners(){
+    private void setRecyclerViewListeners() {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Intent i = new Intent(MainActivity.this, MovieDetailsActivity.class);
                 Movie movie = movieList.get(position);
                 i.putExtra(PARCEL_MOVIE_KEY, movie);
+                i.putExtra(EXTRA_MOVIE_POSITION_KEY, position);
                 startActivity(i);
             }
 
@@ -85,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
         Movie movie = new Movie("Mad Max: Fury Road", "Action & Adventure", "2015", true);
         movieList.add(movie);
 
-        movie = new Movie("Inside Out", "Animation, Kids & Family", "2015", true);
+        movie = new Movie("Inside Out", "Animation, Kids & Family", "2015", true, 4);
         movieList.add(movie);
 
-        movie = new Movie("Star Wars: Episode VII - The Force Awakens", "Action", "2015", true);
+        movie = new Movie("Star Wars: Episode VII - The Force Awakens", "Action", "2015", true, 2);
         movieList.add(movie);
 
         movie = new Movie("Shaun the Sheep", "Animation", "2015");
@@ -103,10 +106,10 @@ public class MainActivity extends AppCompatActivity {
         movie = new Movie("Up", "Animation", "2009");
         movieList.add(movie);
 
-        movie = new Movie("Star Trek", "Science Fiction", "2009");
+        movie = new Movie("Star Trek", "Science Fiction", "2009", true, 4);
         movieList.add(movie);
 
-        movie = new Movie("The LEGO Movie", "Animation", "2014");
+        movie = new Movie("The LEGO Movie", "Animation", "2014", false, 3);
         movieList.add(movie);
 
         movie = new Movie("Iron Man", "Action & Adventure", "2008");
@@ -134,26 +137,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-        switch(event.getAction())
-        {
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 x1 = event.getX();
                 break;
             case MotionEvent.ACTION_UP:
                 x2 = event.getX();
                 float deltaX = x2 - x1;
-                if (Math.abs(deltaX) > MIN_DISTANCE)
-                {
+                if (Math.abs(deltaX) > MIN_DISTANCE) {
                     Toast.makeText(this, "left2right swipe", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     Toast.makeText(this, "something else", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+    public static void modifyMovieRating(int position, float rating){
+        if(movieList != null){
+            if(position >= 0 && position < movieList.size()){
+                movieList.get(position).setRating(rating);
+            }
+        }
     }
 }
