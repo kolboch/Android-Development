@@ -61,6 +61,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> impleme
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-    //do nothing for now
+        //do nothing for now
     }
 }
