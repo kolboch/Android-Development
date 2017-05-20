@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
@@ -26,6 +28,7 @@ public class MovieDetailsFragment extends Fragment {
     @BindView(R.id.details_movie_image)ImageView movieImageView;
     @BindView(R.id.details_movie_description)TextView descriptionView;
     @BindView(R.id.details_movie_ratingBar)RatingBar ratingBar;
+    @BindView(R.id.cast_details)Button castDetailsButton;
     @BindString(R.string.default_movie_title)String defaultTitle;
     @BindString(R.string.default_movie_production_year)String defaultProductionYear;
     @BindString(R.string.default_movie_description)String defaultDescription;
@@ -49,7 +52,12 @@ public class MovieDetailsFragment extends Fragment {
         titleView.setText(currentMovie.getTitle());
         descriptionView.setText(currentMovie.getDescription());
         this.ratingBar.setRating(currentMovie.getRating());
+        setListeners();
+    }
+
+    private void setListeners(){
         setRatingListener();
+        setCastDetailsButtonListener();
     }
 
     private void setRatingListener(){
@@ -59,6 +67,16 @@ public class MovieDetailsFragment extends Fragment {
                 ratingBar.setRating(rating);
                 MovieDetailsFragment.this.currentMovie.setRating(rating);
                 MainActivity.modifyMovieRating(movieIndex, rating);
+            }
+        });
+    }
+
+    private void setCastDetailsButtonListener(){
+        this.castDetailsButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MovieDetailsFragment.this.getActivity(), CastDetailsActivity.class);
+                startActivity(intent);
             }
         });
     }

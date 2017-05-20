@@ -6,4 +6,5 @@
     <string name="default_movie_description">No description provided.</string>
     <string name="movie_details_rating_label">Score:</string>
     <string name="seen_symbol">\uD83D\uDC41</string>
+    <string name="cast_details_label">CAST</string>
 </resources>
