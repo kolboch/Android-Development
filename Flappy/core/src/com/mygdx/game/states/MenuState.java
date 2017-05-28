@@ -22,7 +22,7 @@ public class MenuState extends State {
 
     @Override
     public void handleInput() {
-        if(Gdx.input.justTouched()){
+        if (Gdx.input.justTouched()) {
             gameStateManager.set(new PlayState(gameStateManager));
             dispose();
         }

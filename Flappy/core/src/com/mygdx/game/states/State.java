@@ -14,15 +14,18 @@ public abstract class State {
     protected Vector3 mouse;
     protected GameStateManager gameStateManager;
 
-    public State(GameStateManager gameStateManager){
+    public State(GameStateManager gameStateManager) {
         this.gameStateManager = gameStateManager;
         camera = new OrthographicCamera();
         mouse = new Vector3();
     }
 
     protected abstract void handleInput();
+
     public abstract void update(float delta);
+
     public abstract void render(SpriteBatch spriteBatch);
+
     public abstract void dispose();
 
 }

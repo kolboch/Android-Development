@@ -11,6 +11,8 @@ import java.util.Random;
 
 public class Tube {
 
+    public static final int TUBE_WIDTH;
+
     private static final int FLUCTUATION = 130;
     private static final int TUBE_GAP = 100;
     private static final int LOWEST_OPENING = 120;
@@ -18,8 +20,13 @@ public class Tube {
     private Vector2 positionTopTube, positionBottomTube;
     private Random random;
 
+    static {
+        Texture tube = new Texture("toptube.png");
+        TUBE_WIDTH = tube.getWidth();
+        tube.dispose();
+    }
 
-    public Tube(float x){
+    public Tube(float x) {
         topTube = new Texture("toptube.png");
         bottomTube = new Texture("bottomtube.png");
         random = new Random();
@@ -28,7 +35,7 @@ public class Tube {
 
     }
 
-    public void dispose(){
+    public void dispose() {
         topTube.dispose();
         bottomTube.dispose();
     }
@@ -48,5 +55,10 @@ public class Tube {
 
     public Vector2 getPositionBottomTube() {
         return positionBottomTube;
+    }
+
+    public void reposition(float x) {
+        positionTopTube.set(x, random.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
+        positionBottomTube.set(x, positionTopTube.y - TUBE_GAP - bottomTube.getHeight());
     }
 }
