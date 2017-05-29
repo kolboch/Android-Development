@@ -3,6 +3,7 @@ package com.mygdx.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.FlappyGame;
 import com.mygdx.game.sprites.Bird;
@@ -18,11 +19,14 @@ public class PlayState extends State {
     private static final int TUBE_SPACING = 125;
     private static final int TUBE_COUNT = 4;
     private static final int CAMERA_X_OFFSET = 80;
+    private static final int GROUND_Y_OFFSET = -30;
 
     private Bird bird;
     private int birdStartX = 50;
     private int birdStartY = 100;
     private Texture background;
+    private Texture ground;
+    private Vector2 groundPosition1, groundPosition2;
     private Array<Tube> tubes;
 
     public PlayState(GameStateManager gameStateManager) {
@@ -30,6 +34,9 @@ public class PlayState extends State {
         bird = new Bird(birdStartX, birdStartY);
         camera.setToOrtho(false, FlappyGame.WIDTH / 2, FlappyGame.HEIGHT / 2);
         background = new Texture("bg.png");
+        ground = new Texture("ground.png");
+        groundPosition1 = new Vector2(camera.position.x - camera.viewportWidth / 2, GROUND_Y_OFFSET);
+        groundPosition2 = new Vector2(camera.position.x - camera.viewportWidth / 2 + ground.getWidth(), GROUND_Y_OFFSET);
         tubes = new Array<Tube>();
         for (int i = 1; i <= TUBE_COUNT; i++) {
             tubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
@@ -57,6 +64,8 @@ public class PlayState extends State {
                 break;
             }
         }
+        updateGround();
+        checkGroundCollision();
         camera.update();
     }
 
@@ -70,6 +79,8 @@ public class PlayState extends State {
             spriteBatch.draw(tube.getTopTube(), tube.getPositionTopTube().x, tube.getPositionTopTube().y);
             spriteBatch.draw(tube.getBottomTube(), tube.getPositionBottomTube().x, tube.getPositionBottomTube().y);
         }
+        spriteBatch.draw(ground, groundPosition1.x, groundPosition1.y);
+        spriteBatch.draw(ground, groundPosition2.x, groundPosition2.y);
         spriteBatch.end();
     }
 
@@ -77,9 +88,24 @@ public class PlayState extends State {
     public void dispose() {
         background.dispose();
         bird.dispose();
+        ground.dispose();
         for (Tube t : tubes) {
             t.dispose();
         }
         Gdx.app.log(LOG_PLAY_STATE, "Disposing resources.");
+    }
+
+    private void updateGround(){
+        if(camera.position.x - camera.viewportWidth / 2 > groundPosition1.x + ground.getWidth()){
+            Vector2 temp = new Vector2(groundPosition1.x + ground.getWidth() * 2, groundPosition1.y);
+            groundPosition1 = groundPosition2;
+            groundPosition2 = temp;
+        }
+    }
+
+    private void checkGroundCollision(){
+        if(bird.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET){
+            gameStateManager.set(new PlayState(gameStateManager));
+        }
     }
 }
