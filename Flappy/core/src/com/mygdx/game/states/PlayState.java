@@ -19,11 +19,11 @@ public class PlayState extends State {
     private static final int TUBE_SPACING = 125;
     private static final int TUBE_COUNT = 4;
     private static final int CAMERA_X_OFFSET = 80;
-    private static final int GROUND_Y_OFFSET = -30;
+    private static final int GROUND_Y_OFFSET = -50;
 
     private Bird bird;
     private int birdStartX = 50;
-    private int birdStartY = 100;
+    private int birdStartY = 150;
     private Texture background;
     private Texture ground;
     private Vector2 groundPosition1, groundPosition2;
@@ -60,7 +60,7 @@ public class PlayState extends State {
                 tube.reposition(tube.getPositionTopTube().x + (Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT);
             }
             if (tube.collides(bird.getBounds())) {
-                gameStateManager.set(new PlayState(gameStateManager));
+                gameStateManager.set(new MenuState(gameStateManager));
                 break;
             }
         }
