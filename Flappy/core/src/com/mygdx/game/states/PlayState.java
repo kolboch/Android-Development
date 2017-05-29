@@ -14,6 +14,7 @@ import com.mygdx.game.sprites.Tube;
 
 public class PlayState extends State {
 
+    private static final String LOG_PLAY_STATE = PlayState.class.getSimpleName();
     private static final int TUBE_SPACING = 125;
     private static final int TUBE_COUNT = 4;
     private static final int CAMERA_X_OFFSET = 80;
@@ -47,9 +48,13 @@ public class PlayState extends State {
         handleInput();
         bird.update(delta);
         camera.position.x = bird.getPosition().x + CAMERA_X_OFFSET;
-        for (Tube tube : tubes) {
+        for(Tube tube : tubes){
             if (camera.position.x - camera.viewportWidth / 2 > tube.getPositionTopTube().x + tube.getTopTube().getWidth()) {
                 tube.reposition(tube.getPositionTopTube().x + (Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT);
+            }
+            if (tube.collides(bird.getBounds())) {
+                gameStateManager.set(new PlayState(gameStateManager));
+                break;
             }
         }
         camera.update();
@@ -72,5 +77,9 @@ public class PlayState extends State {
     public void dispose() {
         background.dispose();
         bird.dispose();
+        for (Tube t : tubes) {
+            t.dispose();
+        }
+        Gdx.app.log(LOG_PLAY_STATE, "Disposing resources.");
     }
 }

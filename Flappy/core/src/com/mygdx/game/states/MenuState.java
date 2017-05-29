@@ -11,6 +11,7 @@ import com.mygdx.game.FlappyGame;
 
 public class MenuState extends State {
 
+    private static final String LOG_TAG_MENU_STATE = MenuState.class.getSimpleName();
     private Texture background;
     private Texture playButton;
 
@@ -24,7 +25,6 @@ public class MenuState extends State {
     public void handleInput() {
         if (Gdx.input.justTouched()) {
             gameStateManager.set(new PlayState(gameStateManager));
-            dispose();
         }
     }
 
@@ -45,5 +45,6 @@ public class MenuState extends State {
     public void dispose() {
         background.dispose();
         playButton.dispose();
+        Gdx.app.log(LOG_TAG_MENU_STATE, "Disposing resources.");
     }
 }
